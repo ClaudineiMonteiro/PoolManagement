@@ -12,6 +12,7 @@ using Vm.Pm.App.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Vm.Pm.Data.Context;
 
 namespace Vm.Pm.App
 {
@@ -30,6 +31,11 @@ namespace Vm.Pm.App
 			services.AddDbContext<ApplicationDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddDbContext<PoolManagementDbContext>(options =>
+				options.UseSqlServer(
+					Configuration.GetConnectionString("DefaultConnection")));
+
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
