@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Vm.Pm.Business.Models;
 
 namespace Vm.Pm.Data.Context
@@ -8,10 +11,10 @@ namespace Vm.Pm.Data.Context
 	{
 		public PoolManagementDbContext(DbContextOptions options) : base(options) { }
 
-		DbSet<Address> Addresses;
-		DbSet<Phone> Phones;
-		DbSet<Contact> Contacts;
-		DbSet<Company> Companies;
+		public DbSet<Address> Addresses { get; set; }
+		public DbSet<Phone> Phones { get; set; }
+		public DbSet<Contact> Contacts { get; set; }
+		public DbSet<Company> Companies { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -22,6 +25,27 @@ namespace Vm.Pm.Data.Context
 			foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
 			base.OnModelCreating(modelBuilder);
+		}
+
+		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+		{
+			foreach (var entry in ChangeTracker.Entries().Where(entry => entry.Entity.GetType().GetProperty("RegistrationDate") != null))
+			{
+				if (entry.State == EntityState.Added)
+				{
+					entry.Property("RegistrationDate").CurrentValue = DateTime.Now;
+					entry.Property("LastUpdatedDate").IsModified = false;
+				}
+
+				if (entry.State == EntityState.Modified)
+				{
+					entry.Property("RegistrationDate").IsModified = false;
+					entry.Property("LastUpdatedDate").CurrentValue = DateTime.Now;
+
+				}
+			}
+
+			return base.SaveChangesAsync(cancellationToken);
 		}
 	}
 }
