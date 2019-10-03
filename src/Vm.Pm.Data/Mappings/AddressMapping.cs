@@ -15,7 +15,7 @@ namespace Vm.Pm.Data.Mappings
 				.HasColumnType("varchar(200)");
 
 			builder.Property(p => p.Apt_Suite_Unit)
-				.HasColumnType("varchar(200)");
+				.HasColumnType("varchar(20)");
 
 			builder.Property(p => p.City)
 				.IsRequired()

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vm.Pm.Data.Context;
 
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    partial class PoolManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191002100557_Company_Size_TradeName")]
+    partial class Company_Size_TradeName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +31,7 @@ namespace Vm.Pm.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Apt_Suite_Unit")
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -83,7 +85,7 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<string>("DocumentNumber")
                         .HasColumnType("varchar(20)");
 
-                    b.Property<string>("FEIEIN")
+                    b.Property<string>("FEI_EIN")
                         .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("LastUpdatedDate")

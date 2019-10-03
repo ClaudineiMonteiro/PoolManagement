@@ -5,7 +5,7 @@ namespace Vm.Pm.Business.Models
 	public class Company : Entity
 	{
 		public string DocumentNumber { get; set; }
-		public string FEI_EIN { get; set; }
+		public string FEIEIN { get; set; }
 		public string LegalName { get; set; }
 		public string TradeName { get; set; }
 		public IEnumerable<Contact> Contacts { get; set; }

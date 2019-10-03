@@ -13,14 +13,14 @@ namespace Vm.Pm.Data.Mappings
 			builder.Property(p => p.DocumentNumber)
 				.HasColumnType("varchar(20)");
 
-			builder.Property(p => p.FEI_EIN)
+			builder.Property(p => p.FEIEIN)
 				.HasColumnType("varchar(20)");
 
 			builder.Property(p => p.LegalName)
 				.IsRequired()
 				.HasColumnType("varchar(200)");
 
-			builder.Property(p => p.LegalName)
+			builder.Property(p => p.TradeName)
 				.HasColumnType("varchar(200)");
 
 			builder.HasMany(c => c.Contacts)

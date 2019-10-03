@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vm.Pm.Data.Context;
 
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    partial class PoolManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191002102705_Company_Rename_FEIEIN")]
+    partial class Company_Rename_FEIEIN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +31,7 @@ namespace Vm.Pm.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Apt_Suite_Unit")
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("City")
                         .IsRequired()
