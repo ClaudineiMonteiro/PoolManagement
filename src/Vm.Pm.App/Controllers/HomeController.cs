@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Vm.Pm.App.Models;
+using Vm.Pm.App.ViewModels;
 
 namespace Vm.Pm.App.Controllers
 {

@@ -12,7 +12,7 @@ namespace Vm.Pm.Business.Models
 		public string City { get; set; }
 		public string State_Province { get; set; }
 		public string ZipPostalCode { get; set; }
-		public TypeAddress MyProperty { get; set; }
+		public TypeAddress TypeAddress { get; set; }
 		public Company Company { get; set; }
 		public Contact Contact { get; set; }
 	}
