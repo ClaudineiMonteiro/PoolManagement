@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Vm.Pm.Data.Context;
+using Vm.Pm.App.Configurations;
 
 namespace Vm.Pm.App
 {
@@ -35,6 +36,8 @@ namespace Vm.Pm.App
 			services.AddDbContext<PoolManagementDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
+
+			services.ResolveDependencies();
 
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
@@ -71,6 +74,7 @@ namespace Vm.Pm.App
 					pattern: "{controller=Home}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
+
 		}
 	}
 }
