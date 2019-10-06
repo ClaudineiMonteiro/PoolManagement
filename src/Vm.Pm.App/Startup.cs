@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Vm.Pm.Data.Context;
 using Vm.Pm.App.Configurations;
+using AutoMapper;
 
 namespace Vm.Pm.App
 {
@@ -36,6 +37,8 @@ namespace Vm.Pm.App
 			services.AddDbContext<PoolManagementDbContext>(options =>
 				options.UseSqlServer(
 					Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddAutoMapper(typeof(Startup));
 
 			services.ResolveDependencies();
 
