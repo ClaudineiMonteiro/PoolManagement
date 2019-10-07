@@ -1,13 +1,13 @@
 ﻿@model Vm.Pm.App.ViewModels.CompanyViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes";
 }
 
-<h1>Details</h1>
+	<h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>CompanyViewModel</h4>
+    <h4>Informações apenas de leitura</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -37,6 +37,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+	<a class="btn btn-dark" supress-by-claim-name="Company" supress-by-claim-value="Edit" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+	<a class="btn btn-info" asp-action="Index">Voltar</a>
 </div>

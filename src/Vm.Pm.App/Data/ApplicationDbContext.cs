@@ -13,5 +13,6 @@ namespace Vm.Pm.App.Data
 			: base(options)
 		{
 		}
+		public DbSet<Vm.Pm.App.ViewModels.ContactViewModel> ContactViewModel { get; set; }
 	}
 }
