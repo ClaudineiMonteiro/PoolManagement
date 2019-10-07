@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Vm.Pm.App.ViewModels.ContactViewModel>
 
+<p supress-by-claim-name="Contact" supress-by-claim-value="Add">
+	<a class="btn btn-info" asp-controller="Contacts" asp-action="Create">Novo Contato</a>
+</p>
+
 <table class="table table-hover">
     <thead class="thead-dark">
         <tr>

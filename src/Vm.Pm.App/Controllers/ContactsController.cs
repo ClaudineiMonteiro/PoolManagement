@@ -2,153 +2,134 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Vm.Pm.App.Data;
 using Vm.Pm.App.ViewModels;
+using Vm.Pm.Business.Interfaces;
+using Vm.Pm.Business.Interfaces.Notifications;
+using Vm.Pm.Business.Interfaces.Services;
+using Vm.Pm.Business.Models;
 
 namespace Vm.Pm.App.Controllers
 {
-    public class ContactsController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	public class ContactsController : BaseController
+	{
+		private readonly IContactRepository _contactRepository;
+		private readonly IContactService _contactService;
+		private readonly IMapper _mapper;
 
-        public ContactsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public ContactsController(IContactRepository contactRepository,
+			IContactService contactService,
+			IMapper mapper,
+			INotifier notifier) : base(notifier)
+		{
+			_contactRepository = contactRepository;
+			_contactService = contactService;
+			_mapper = mapper;
+		}
 
-        // GET: Contacts
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.ContactViewModel.ToListAsync());
-        }
+		[Route("list-of-contacts")]
+		public async Task<IActionResult> Index()
+		{
+			return View(_mapper.Map<ContactViewModel>(_contactRepository.GetAll()));
+		}
 
-        // GET: Contacts/Details/5
-        public async Task<IActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		[Route("data-of-contact/{id:guid}")]
+		public async Task<IActionResult> Details(Guid id)
+		{
+			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetById(id));
 
-            var contactViewModel = await _context.ContactViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contactViewModel == null)
-            {
-                return NotFound();
-            }
+			if (contactViewModel == null)
+			{
+				return NotFound();
+			}
 
-            return View(contactViewModel);
-        }
+			return View(contactViewModel);
+		}
 
-        // GET: Contacts/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+		[Route("new-contact")]
+		public IActionResult Create()
+		{
+			return View();
+		}
 
-        // POST: Contacts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Active,CompanyId")] ContactViewModel contactViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                contactViewModel.Id = Guid.NewGuid();
-                _context.Add(contactViewModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(contactViewModel);
-        }
+		[Route("new-contact")]
+		[HttpPost]
+		public async Task<IActionResult> Create(ContactViewModel contactViewModel)
+		{
+			if (!ModelState.IsValid) return View(contactViewModel);
 
-        // GET: Contacts/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+			var contact = _mapper.Map<Contact>(contactViewModel);
 
-            var contactViewModel = await _context.ContactViewModel.FindAsync(id);
-            if (contactViewModel == null)
-            {
-                return NotFound();
-            }
-            return View(contactViewModel);
-        }
+			await _contactService.Add(contact);
 
-        // POST: Contacts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Email,Active,CompanyId")] ContactViewModel contactViewModel)
-        {
-            if (id != contactViewModel.Id)
-            {
-                return NotFound();
-            }
+			if (!ValidOperation()) return View(contactViewModel);
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(contactViewModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ContactViewModelExists(contactViewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(contactViewModel);
-        }
+			return RedirectToAction("Index");
+		}
 
-        // GET: Contacts/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		[Route("edit-contact/{id:guid}")]
+		public async Task<IActionResult> Edit(Guid id)
+		{
+			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetById(id));
 
-            var contactViewModel = await _context.ContactViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (contactViewModel == null)
-            {
-                return NotFound();
-            }
+			if (contactViewModel == null)
+			{
+				return NotFound();
+			}
 
-            return View(contactViewModel);
-        }
+			return View(contactViewModel);
+		}
+		[Route("edit-contact/{id:guid}")]
+		[HttpPost]
+		public async Task<IActionResult> Edit(Guid id, ContactViewModel contactViewModel)
+		{
+			if (id != contactViewModel.Id) return NotFound();
 
-        // POST: Contacts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var contactViewModel = await _context.ContactViewModel.FindAsync(id);
-            _context.ContactViewModel.Remove(contactViewModel);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+			if (!ModelState.IsValid) return View(contactViewModel);
 
-        private bool ContactViewModelExists(Guid id)
-        {
-            return _context.ContactViewModel.Any(e => e.Id == id);
-        }
-    }
+			var contact = _mapper.Map<Contact>(contactViewModel);
+
+			await _contactService.Update(contact);
+
+			if (!ValidOperation()) return View(_mapper.Map<ContactViewModel>(await _contactRepository.GetById(id)));
+
+			return RedirectToAction("Index");
+		}
+
+		[Route("remove-contact/{id:guid}")]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetById(id));
+
+			if (contactViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return View(contactViewModel);
+		}
+
+		[Route("remove-contact/{id:guid}")]
+		[HttpPost, ActionName("Delete")]
+		public async Task<IActionResult> DeleteConfirmed(Guid id)
+		{
+			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetById(id));
+
+			if (contactViewModel == null)
+			{
+				return NotFound();
+			}
+
+			await _contactService.Remove(id);
+
+			if (!ValidOperation()) return View(contactViewModel);
+
+			return RedirectToAction("Index");
+		}
+
+	}
 }

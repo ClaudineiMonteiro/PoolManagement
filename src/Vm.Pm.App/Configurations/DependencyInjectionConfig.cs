@@ -21,6 +21,7 @@ namespace Vm.Pm.App.Configurations
 
 			services.AddScoped<INotifier, Notifier>();
 			services.AddScoped<ICompanyService, CompanyService>();
+			services.AddScoped<IContactService, ContactService>();
 
 			return services;
 		}
