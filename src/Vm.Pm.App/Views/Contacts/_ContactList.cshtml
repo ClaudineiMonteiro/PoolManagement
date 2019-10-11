@@ -1,26 +1,26 @@
-﻿@model IEnumerable<Vm.Pm.App.ViewModels.ContactViewModel>
+﻿@model Vm.Pm.App.ViewModels.CompanyViewModel
 
 	<p supress-by-claim-name="Contact" supress-by-claim-value="Add">
-		<a class="btn btn-info" asp-controller="Contacts" asp-action="AddContactByList" asp-route-id="@Model.FirstOrDefault().CompanyId">Novo Contato</a>
+		<a class="btn btn-info" asp-controller="Contacts" asp-action="AddContactByList" asp-route-id="@Model.Id">Novo Contato</a>
 	</p>
 
 <table class="table table-hover">
     <thead class="thead-dark">
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Name)
+				@Html.DisplayNameFor(model => model.Contacts.FirstOrDefault().Name)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Email)
+				@Html.DisplayNameFor(model => model.Contacts.FirstOrDefault().Email)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CompanyId)
+				@Html.DisplayNameFor(model => model.Contacts.FirstOrDefault().CompanyId)
 			</th>
 			<th></th>
 		</tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Contacts) {
 		<tr>
 			<td>
 				@Html.DisplayFor(modelItem => item.Name)
