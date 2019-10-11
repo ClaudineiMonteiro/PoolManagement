@@ -1,20 +1,23 @@
 ﻿@model IEnumerable<Vm.Pm.App.ViewModels.ContactViewModel>
 
-<p supress-by-claim-name="Contact" supress-by-claim-value="Add">
-	<a class="btn btn-info" asp-controller="Contacts" asp-action="Create">Novo Contato</a>
-</p>
+	<p supress-by-claim-name="Contact" supress-by-claim-value="Add">
+		<a class="btn btn-info" asp-controller="Contacts" asp-action="AddContactByList" asp-route-id="@Model.FirstOrDefault().CompanyId">Novo Contato</a>
+	</p>
 
 <table class="table table-hover">
     <thead class="thead-dark">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th></th>
-        </tr>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Email)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CompanyId)
+			</th>
+			<th></th>
+		</tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
@@ -24,6 +27,9 @@
 			</td>
 			<td>
 				@Html.DisplayFor(modelItem => item.Email)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.CompanyId)
 			</td>
 			<td class="text-right">
 				<a class="btn btn-warning" asp-controller="Contacts" asp-action="Details" asp-route-id="@item.Id"><spam class="fa fa-search"></spam> </a>

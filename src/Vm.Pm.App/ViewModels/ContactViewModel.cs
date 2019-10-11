@@ -21,9 +21,11 @@ namespace Vm.Pm.App.ViewModels
 		public string Email { get; set; }
 		[DisplayName("Ativo?")]
 		public bool Active { get; set; }
+
 		[HiddenInput]
 		public Guid CompanyId { get; set; }
 
+		public CompanyViewModel Company { get; set; }
 		public IEnumerable<PhoneViewModel> Phones { get; set; }
 		public IEnumerable<AddressViewModel> Adresses { get; set; }
 	}

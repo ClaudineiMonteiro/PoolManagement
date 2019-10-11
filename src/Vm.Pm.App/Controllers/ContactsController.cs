@@ -131,5 +131,10 @@ namespace Vm.Pm.App.Controllers
 			return RedirectToAction("Index");
 		}
 
+		[Route("add-contact-by-list/{id:guid}")]
+		public ActionResult AddContactByList(Guid id)
+		{
+			return View("Create", new ContactViewModel { CompanyId = id });
+		}
 	}
 }
