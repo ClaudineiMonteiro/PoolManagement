@@ -8,11 +8,11 @@ namespace Vm.Pm.Business.Validations
 		public ContactValidation()
 		{
 			RuleFor(c => c.Name)
-				.Empty().WithMessage(MessageValidation.FieldNotEmpty)
+				.NotEmpty().WithMessage(MessageValidation.FieldNotEmpty)
 				.Length(2, 200).WithMessage(MessageValidation.FieldSizeBetweem);
 
 			RuleFor(c => c.Email)
-				.Empty().WithMessage(MessageValidation.FieldNotEmpty)
+				.NotEmpty().WithMessage(MessageValidation.FieldNotEmpty)
 				.Length(2, 200).WithMessage(MessageValidation.FieldSizeBetweem);
 		}
 	}
