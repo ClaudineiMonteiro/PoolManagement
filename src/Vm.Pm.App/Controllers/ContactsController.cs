@@ -68,7 +68,7 @@ namespace Vm.Pm.App.Controllers
 
 			if (!ValidOperation()) return View(contactViewModel);
 
-			return RedirectToAction("Index");
+			return RedirectToAction("Edit", "Companies", new { id = contactViewModel.CompanyId });
 		}
 
 		[Route("edit-contact/{id:guid}")]
