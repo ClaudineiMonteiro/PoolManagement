@@ -56,7 +56,7 @@ namespace Vm.Pm.App.Controllers
 
 			if (!ValidOperation()) return View(phoneViewModel);
 
-			return RedirectToAction("Edit", "Contacts", new { id = phoneViewModel.Id });
+			return RedirectToAction("Edit", "Contacts", new { id = phoneViewModel.ContactId });
 		}
 
 		[Route("data-of-phone/id:guid")]
@@ -134,6 +134,12 @@ namespace Vm.Pm.App.Controllers
 			if (!ValidOperation()) return View(phoneViewModel);
 
 			return RedirectToAction("Index");
+		}
+
+		[Route("add-phone-by-list/{id:guid}")]
+		public ActionResult AddPhoneByList(Guid id)
+		{
+			return View("Create", new PhoneViewModel { ContactId = id });
 		}
 	}
 }

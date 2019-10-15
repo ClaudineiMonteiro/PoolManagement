@@ -69,7 +69,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("edit-contact/{id:guid}")]
 		public async Task<IActionResult> Edit(Guid id)
 		{
-			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetById(id));
+			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetContactPhonesAddresses(id));
 
 			if (contactViewModel == null)
 			{

@@ -5,8 +5,8 @@ namespace Vm.Pm.Business.Models
 {
 	public class Phone : Entity
 	{
-		public Guid CompanyId { get; set; }
-		public Guid ContactId { get; set; }
+		public Guid? CompanyId { get; set; }
+		public Guid? ContactId { get; set; }
 		public string Number { get; set; }
 		public TypePhone TypePhone { get; set; }
 		public Company Company { get; set; }

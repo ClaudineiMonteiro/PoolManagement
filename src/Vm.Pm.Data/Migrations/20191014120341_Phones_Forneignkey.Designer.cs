@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vm.Pm.Data.Context;
 
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    partial class PoolManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191014120341_Phones_Forneignkey")]
+    partial class Phones_Forneignkey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,10 +148,10 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("CompanyId")
+                    b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ContactId")
+                    b.Property<Guid>("ContactId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("LastUpdatedDate")
@@ -199,11 +201,13 @@ namespace Vm.Pm.Data.Migrations
                 {
                     b.HasOne("Vm.Pm.Business.Models.Company", "Company")
                         .WithMany("Phones")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .IsRequired();
 
                     b.HasOne("Vm.Pm.Business.Models.Contact", "Contact")
                         .WithMany("Phones")
-                        .HasForeignKey("ContactId");
+                        .HasForeignKey("ContactId")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
