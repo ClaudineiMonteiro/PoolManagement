@@ -36,7 +36,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("list-of-contacts")]
 		public async Task<IActionResult> Index()
 		{
-			return View(_mapper.Map<ContactViewModel>(_contactRepository.GetAll()));
+			return View(_mapper.Map<ContactViewModel>(await _contactRepository.GetAll()));
 		}
 
 		[Route("data-of-contact/{id:guid}")]
