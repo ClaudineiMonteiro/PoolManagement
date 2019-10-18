@@ -9,5 +9,7 @@ namespace Vm.Pm.Business.Interfaces.Services
 		Task Add(Contact contact);
 		Task Update(Contact contact);
 		Task Remove(Guid id);
+
+		Task AddPhone(Phone phone);
 	}
 }

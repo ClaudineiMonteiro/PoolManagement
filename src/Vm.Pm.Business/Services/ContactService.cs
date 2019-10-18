@@ -12,11 +12,14 @@ namespace Vm.Pm.Business.Services
 	public class ContactService : BaseService, IContactService
 	{
 		private readonly IContactRepository _contactRepository;
+		private readonly IPhoneRepository _phoneRepository;
 
 		public ContactService(IContactRepository contactRepository,
+			IPhoneRepository phoneRepository,
 			INotifier notifier) : base(notifier)
 		{
 			_contactRepository = contactRepository;
+			_phoneRepository = phoneRepository;
 		}
 		public async Task Add(Contact contact)
 		{
@@ -61,6 +64,13 @@ namespace Vm.Pm.Business.Services
 		public void Dispose()
 		{
 			_contactRepository?.Dispose();
+		}
+
+		public async Task AddPhone(Phone phone)
+		{
+			if (!PerformValidation(new PhoneValidation(), phone)) return;
+
+			await _phoneRepository.Add(phone);
 		}
 	}
 }

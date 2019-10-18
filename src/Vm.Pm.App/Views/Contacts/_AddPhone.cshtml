@@ -1,0 +1,28 @@
+﻿@model Vm.Pm.App.ViewModels.PhoneViewModel
+
+@{
+	ViewData["Title"] = "Novo Phone";
+}
+
+<div class="modal-header">
+	<h4 class="modal-title">@ViewData["Title"]</h4>
+	<button type="button" class="close" data-dismiss="modal">
+		<span aria-hidden="true">×</span><span class="sr-only">Fechar</span>
+	</button>
+</div>
+
+<form asp-action="AddPhone">
+	<div class="modal-body">
+		<input type="hidden" asp-for="ContactId" />
+		<input type="hidden" asp-for="Id" />
+
+		<partial name="_Phone" />
+
+		<div class="modal-footer">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Adicionar Phone" class="btn btn-success" />
+				<input type="button" class="btn btn-info" value="Fechar" data-dismiss="modal" />
+			</div>
+		</div>
+	</div>
+</form>

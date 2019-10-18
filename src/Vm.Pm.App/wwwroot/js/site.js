@@ -31,7 +31,7 @@ function AjaxModal() {
 					success: function (result) {
 						if (result.success) {
 							$('#myModal').modal('hide');
-							$('#EnderecoTarget').load(result.url); // Carrega o resultado HTML para a div demarcada
+							$('#PhoneTarget').load(result.url); // Carrega o resultado HTML para a div demarcada
 						} else {
 							$('#myModalContent').html(result);
 							bindForm(dialog);

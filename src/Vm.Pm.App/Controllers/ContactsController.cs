@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Vm.Pm.App.ViewModels;
 using Vm.Pm.Business.Interfaces;
@@ -14,15 +18,18 @@ namespace Vm.Pm.App.Controllers
 	{
 		private readonly IContactRepository _contactRepository;
 		private readonly IContactService _contactService;
+		private readonly IPhoneRepository _phoneRepository;
 		private readonly IMapper _mapper;
 
 		public ContactsController(IContactRepository contactRepository,
 			IContactService contactService,
+			IPhoneRepository phoneRepository,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
 			_contactRepository = contactRepository;
 			_contactService = contactService;
+			_phoneRepository = phoneRepository;
 			_mapper = mapper;
 		}
 
@@ -130,6 +137,54 @@ namespace Vm.Pm.App.Controllers
 		public ActionResult AddContactByList(Guid id)
 		{
 			return View("Create", new ContactViewModel { CompanyId = id });
+		}
+
+		[AllowAnonymous]
+		[Route("get-phone-contact/{id:guid}")]
+		public async Task<IActionResult> GetPhone(Guid id)
+		{
+			var phones = await GetPhonesContact(id);
+
+			if (phones == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("_PhoneList", phones);
+		}
+
+		[AllowAnonymous]
+		[Route("get-phones-contact/{id:guid}")]
+		private async Task<IActionResult> GetPhonesContact(Guid id)
+		{
+			var phones = _mapper.Map<IEnumerable<PhoneViewModel>>(await _phoneRepository.GetPhonesByContact(id));
+
+			if (phones == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("_PhonesList", phones);
+		}
+
+		[Route("add-phone-contact/{id:guid}")]
+		public ActionResult AddPhone(Guid id)
+		{
+			return PartialView("_AddPhone", new PhoneViewModel { ContactId = id });
+		}
+
+		[Route("add-phone-contact/{id:guid}")]
+		[HttpPost]
+		public async Task<ActionResult> AddPhone(PhoneViewModel phoneViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("_PhoneList", phoneViewModel);
+
+			await _contactService.AddPhone(_mapper.Map<Phone>(phoneViewModel));
+
+			if (!ValidOperation()) return PartialView("_AddPhone", phoneViewModel);
+
+			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
+			return Json(new { success = true, url });
 		}
 	}
 }
