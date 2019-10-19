@@ -22,7 +22,7 @@ namespace Vm.Pm.App.ViewModels
 		public string Number { get; set; }
 		[DisplayName("Tipo de Telefone")]
 		[Required(ErrorMessage = "O Campo {0} é obrigatório")]
-		public int TypePhone { get; set; }
+		public int TypePhoneId { get; set; }
 		[HiddenInput]
 		public Guid? CompanyId { get; set; }
 		[HiddenInput]

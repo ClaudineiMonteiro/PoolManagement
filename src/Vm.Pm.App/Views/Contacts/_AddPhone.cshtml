@@ -11,10 +11,10 @@
 	</button>
 </div>
 
-<form asp-action="AddPhone">
+<form asp-action="AddNewPhone">
 	<div class="modal-body">
 		<input type="hidden" asp-for="ContactId" />
-		<input type="hidden" asp-for="Id" />
+		@*<input type="hidden" asp-for="Id" />*@
 
 		<partial name="_Phone" />
 

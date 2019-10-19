@@ -155,7 +155,7 @@ namespace Vm.Pm.App.Controllers
 
 		[AllowAnonymous]
 		[Route("get-phones-contact/{id:guid}")]
-		private async Task<IActionResult> GetPhonesContact(Guid id)
+		public async Task<IActionResult> GetPhonesContact(Guid id)
 		{
 			var phones = _mapper.Map<IEnumerable<PhoneViewModel>>(await _phoneRepository.GetPhonesByContact(id));
 
@@ -167,15 +167,15 @@ namespace Vm.Pm.App.Controllers
 			return PartialView("_PhonesList", phones);
 		}
 
-		[Route("add-phone-contact/{id:guid}")]
-		public ActionResult AddPhone(Guid id)
+		[Route("new-phone-contact/{id:guid}")]
+		public IActionResult NewPhone(Guid id)
 		{
 			return PartialView("_AddPhone", new PhoneViewModel { ContactId = id });
 		}
 
-		[Route("add-phone-contact/{id:guid}")]
+		[Route("addnew-phone-contact")]
 		[HttpPost]
-		public async Task<ActionResult> AddPhone(PhoneViewModel phoneViewModel)
+		public async Task<IActionResult> AddNewPhone(PhoneViewModel phoneViewModel)
 		{
 			if (!ModelState.IsValid) return PartialView("_PhoneList", phoneViewModel);
 
