@@ -242,5 +242,18 @@ namespace Vm.Pm.App.Controllers
 			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
 			return Json(new { success = true, url });
 		}
+
+		[Route("detail-phone-contact/{id:guid}")]
+		public async Task<IActionResult> DetailPhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("_DetailPhone", phoneViewModel);
+		}
 	}
 }
