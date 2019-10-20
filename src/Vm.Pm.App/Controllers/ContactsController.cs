@@ -19,17 +19,20 @@ namespace Vm.Pm.App.Controllers
 		private readonly IContactRepository _contactRepository;
 		private readonly IContactService _contactService;
 		private readonly IPhoneRepository _phoneRepository;
+		private readonly IPhoneService _phoneService;
 		private readonly IMapper _mapper;
 
 		public ContactsController(IContactRepository contactRepository,
 			IContactService contactService,
 			IPhoneRepository phoneRepository,
+			IPhoneService phoneService,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
 			_contactRepository = contactRepository;
 			_contactService = contactService;
 			_phoneRepository = phoneRepository;
+			_phoneService = phoneService;
 			_mapper = mapper;
 		}
 
@@ -157,14 +160,14 @@ namespace Vm.Pm.App.Controllers
 		[Route("get-phones-contact/{id:guid}")]
 		public async Task<IActionResult> GetPhonesContact(Guid id)
 		{
-			var phones = _mapper.Map<IEnumerable<PhoneViewModel>>(await _phoneRepository.GetPhonesByContact(id));
+			var phonesViewModel = _mapper.Map<IEnumerable<PhoneViewModel>>(await _phoneRepository.GetPhonesByContact(id));
 
-			if (phones == null)
+			if (phonesViewModel == null)
 			{
 				return NotFound();
 			}
 
-			return PartialView("_PhonesList", phones);
+			return PartialView("_PhonesList", phonesViewModel);
 		}
 
 		[Route("new-phone-contact/{id:guid}")]
@@ -182,6 +185,59 @@ namespace Vm.Pm.App.Controllers
 			await _contactService.AddPhone(_mapper.Map<Phone>(phoneViewModel));
 
 			if (!ValidOperation()) return PartialView("_AddPhone", phoneViewModel);
+
+			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
+			return Json(new { success = true, url });
+		}
+
+		[Route("delete-phone-contact/{id:guid}")]
+		public async Task<IActionResult> DeletePhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("_DeletePhone", phoneViewModel);
+		}
+
+		[Route("confirme-delete-phone-contact")]
+		[HttpPost]
+		public async Task<IActionResult> ConfirmeDeletePhoneContact(PhoneViewModel phoneViewModel)
+		{
+
+			await _phoneService.Remove(phoneViewModel.Id);
+
+			if (!ValidOperation()) return View(phoneViewModel);
+
+			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
+			return Json(new { success = true, url });
+		}
+
+		[Route("edit-phone-contact/{id:guid}")]
+		public async Task<IActionResult> EditPhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("_EditPhone", phoneViewModel);
+		}
+
+		[Route("confirme-edit-phone-contact")]
+		[HttpPost]
+		public async Task<IActionResult> ConfirmeEditPhoneContact(PhoneViewModel phoneViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("_PhonesList", phoneViewModel);
+
+			await _phoneService.Update(_mapper.Map<Phone>(phoneViewModel));
+
+			if (!ValidOperation()) return PartialView("_PhonesList", phoneViewModel);
 
 			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
 			return Json(new { success = true, url });
