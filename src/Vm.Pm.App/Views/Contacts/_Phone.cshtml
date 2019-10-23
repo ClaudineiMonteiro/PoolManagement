@@ -7,6 +7,8 @@
 </div>
 <div class="form-group">
 	<label asp-for="TypePhoneId" class="control-label"></label>
-	<input asp-for="TypePhoneId" class="form-control" asp-items="@(new SelectList(Model.TypePhones, "Id", "Description"))"/>
+	<select asp-for="TypePhoneId" class="form-control" asp-items="@(new SelectList(Model.TypePhones, "Id", "Description"))">
+		<option></option>
+	</select>
 	<span asp-validation-for="TypePhoneId" class="text-danger"></span>
 </div>

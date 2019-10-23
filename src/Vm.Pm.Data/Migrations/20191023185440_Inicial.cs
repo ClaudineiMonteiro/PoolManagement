@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Vm.Pm.Data.Migrations
 {
-    public partial class DataInitial : Migration
+    public partial class Inicial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,9 +16,9 @@ namespace Vm.Pm.Data.Migrations
                     LastUpdatedDate = table.Column<DateTime>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     DocumentNumber = table.Column<string>(type: "varchar(20)", nullable: true),
-                    FEI_EIN = table.Column<string>(type: "varchar(20)", nullable: true),
+                    FEIEIN = table.Column<string>(type: "varchar(20)", nullable: true),
                     LegalName = table.Column<string>(type: "varchar(200)", nullable: false),
-                    TradeName = table.Column<string>(nullable: true)
+                    TradeName = table.Column<string>(type: "varchar(200)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,11 +59,11 @@ namespace Vm.Pm.Data.Migrations
                     CompanyId = table.Column<Guid>(nullable: false),
                     ContactId = table.Column<Guid>(nullable: false),
                     PublicPlace = table.Column<string>(type: "varchar(200)", nullable: false),
-                    Apt_Suite_Unit = table.Column<string>(type: "varchar(200)", nullable: true),
+                    Apt_Suite_Unit = table.Column<string>(type: "varchar(20)", nullable: true),
                     City = table.Column<string>(type: "varchar(20)", nullable: false),
                     State_Province = table.Column<string>(type: "varchar(20)", nullable: false),
                     ZipPostalCode = table.Column<string>(type: "varchar(8)", nullable: false),
-                    MyProperty = table.Column<int>(nullable: false)
+                    TypeAddress = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,8 +90,8 @@ namespace Vm.Pm.Data.Migrations
                     RegistrationDate = table.Column<DateTime>(nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
-                    CompanyId = table.Column<Guid>(nullable: false),
-                    ContactId = table.Column<Guid>(nullable: false),
+                    CompanyId = table.Column<Guid>(nullable: true),
+                    ContactId = table.Column<Guid>(nullable: true),
                     Number = table.Column<string>(type: "varchar(11)", nullable: false),
                     TypePhone = table.Column<int>(nullable: false)
                 },

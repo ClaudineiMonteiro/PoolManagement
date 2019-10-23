@@ -191,7 +191,7 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 
-		[Route("delete-phone-contact/{id:guid}")]
+		//[Route("delete-phone-contact/{id:guid}")]
 		public async Task<IActionResult> DeletePhone(Guid id)
 		{
 			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
@@ -204,14 +204,15 @@ namespace Vm.Pm.App.Controllers
 			return PartialView("_DeletePhone", phoneViewModel);
 		}
 
-		[Route("confirme-delete-phone-contact")]
+		//[Route("confirme-delete-phone-contact")]
 		[HttpPost]
-		public async Task<IActionResult> ConfirmeDeletePhoneContact(PhoneViewModel phoneViewModel)
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeletePhone(PhoneViewModel phoneViewModel)
 		{
 
-			await _phoneService.Remove(phoneViewModel.Id);
+			await _phoneRepository.Remove(phoneViewModel.Id);
 
-			if (!ValidOperation()) return View(phoneViewModel);
+			if (!ValidOperation()) return PartialView("_DeletePhone", phoneViewModel);
 
 			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
 			return Json(new { success = true, url });
@@ -239,7 +240,7 @@ namespace Vm.Pm.App.Controllers
 
 			await _phoneService.Update(_mapper.Map<Phone>(phoneViewModel));
 
-			if (!ValidOperation()) return PartialView("_PhonesList", phoneViewModel);
+			if (!ValidOperation()) return PartialView("_EditPhone", phoneViewModel);
 
 			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
 			return Json(new { success = true, url });

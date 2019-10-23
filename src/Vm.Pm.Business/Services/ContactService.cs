@@ -61,16 +61,16 @@ namespace Vm.Pm.Business.Services
 			return isValid;
 		}
 
-		public void Dispose()
-		{
-			_contactRepository?.Dispose();
-		}
-
 		public async Task AddPhone(Phone phone)
 		{
 			if (!PerformValidation(new PhoneValidation(), phone)) return;
 
 			await _phoneRepository.Add(phone);
+		}
+		public void Dispose()
+		{
+			_contactRepository?.Dispose();
+			_phoneRepository?.Dispose();
 		}
 	}
 }

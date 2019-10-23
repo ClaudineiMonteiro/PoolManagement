@@ -10,8 +10,8 @@ using Vm.Pm.Data.Context;
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    [Migration("20190928191400_Data-Initial")]
-    partial class DataInitial
+    [Migration("20191023185440_Inicial")]
+    partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,7 +31,7 @@ namespace Vm.Pm.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Apt_Suite_Unit")
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -46,9 +46,6 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<DateTime?>("LastUpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
-
                     b.Property<string>("PublicPlace")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
@@ -59,6 +56,9 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<string>("State_Province")
                         .IsRequired()
                         .HasColumnType("varchar(20)");
+
+                    b.Property<int>("TypeAddress")
+                        .HasColumnType("int");
 
                     b.Property<string>("ZipPostalCode")
                         .IsRequired()
@@ -85,7 +85,7 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<string>("DocumentNumber")
                         .HasColumnType("varchar(20)");
 
-                    b.Property<string>("FEI_EIN")
+                    b.Property<string>("FEIEIN")
                         .HasColumnType("varchar(20)");
 
                     b.Property<DateTime?>("LastUpdatedDate")
@@ -99,7 +99,7 @@ namespace Vm.Pm.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TradeName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
 
@@ -148,10 +148,10 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("CompanyId")
+                    b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ContactId")
+                    b.Property<Guid?>("ContactId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("LastUpdatedDate")
@@ -201,13 +201,11 @@ namespace Vm.Pm.Data.Migrations
                 {
                     b.HasOne("Vm.Pm.Business.Models.Company", "Company")
                         .WithMany("Phones")
-                        .HasForeignKey("CompanyId")
-                        .IsRequired();
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("Vm.Pm.Business.Models.Contact", "Contact")
                         .WithMany("Phones")
-                        .HasForeignKey("ContactId")
-                        .IsRequired();
+                        .HasForeignKey("ContactId");
                 });
 #pragma warning restore 612, 618
         }
