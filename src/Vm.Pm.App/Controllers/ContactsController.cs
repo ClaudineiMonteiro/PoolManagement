@@ -160,14 +160,15 @@ namespace Vm.Pm.App.Controllers
 		[Route("get-phones-contact/{id:guid}")]
 		public async Task<IActionResult> GetPhonesContact(Guid id)
 		{
-			var phonesViewModel = _mapper.Map<IEnumerable<PhoneViewModel>>(await _phoneRepository.GetPhonesByContact(id));
 
-			if (phonesViewModel == null)
+			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetContactPhonesAddresses(id));
+
+			if (contactViewModel == null)
 			{
 				return NotFound();
 			}
 
-			return PartialView("_PhonesList", phonesViewModel);
+			return PartialView("_PhonesList", contactViewModel);
 		}
 
 		[Route("new-phone-contact/{id:guid}")]
@@ -216,7 +217,7 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 
-		[Route("edit-phone-contact/{id:guid}")]
+		//[Route("edit-phone-contact/{id:guid}")]
 		public async Task<IActionResult> EditPhone(Guid id)
 		{
 			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
@@ -229,11 +230,12 @@ namespace Vm.Pm.App.Controllers
 			return PartialView("_EditPhone", phoneViewModel);
 		}
 
-		[Route("confirme-edit-phone-contact")]
+		//[Route("confirme-edit-phone-contact")]
 		[HttpPost]
-		public async Task<IActionResult> ConfirmeEditPhoneContact(PhoneViewModel phoneViewModel)
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> EditPhone(PhoneViewModel phoneViewModel)
 		{
-			if (!ModelState.IsValid) return PartialView("_PhonesList", phoneViewModel);
+			if (!ModelState.IsValid) return PartialView("_EditPhone", phoneViewModel);
 
 			await _phoneService.Update(_mapper.Map<Phone>(phoneViewModel));
 

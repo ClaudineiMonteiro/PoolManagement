@@ -8,7 +8,7 @@ namespace Vm.Pm.Business.Models
 		public Guid CompanyId { get; set; }
 		public Guid ContactId { get; set; }
 		public string PublicPlace { get; set; }
-		public string? Apt_Suite_Unit { get; set; }
+		public string Apt_Suite_Unit { get; set; }
 		public string City { get; set; }
 		public string State_Province { get; set; }
 		public string ZipPostalCode { get; set; }
