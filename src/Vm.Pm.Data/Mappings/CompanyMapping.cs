@@ -35,6 +35,10 @@ namespace Vm.Pm.Data.Mappings
 				.WithOne(c => c.Company)
 				.HasForeignKey(f => f.CompanyId);
 
+			builder.HasMany(c => c.Collaborators)
+				.WithOne(c => c.Company)
+				.HasForeignKey(f => f.CompanyId);
+
 			builder.ToTable("Companies");
 		}
 	}

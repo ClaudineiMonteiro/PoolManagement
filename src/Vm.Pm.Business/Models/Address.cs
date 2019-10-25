@@ -7,6 +7,7 @@ namespace Vm.Pm.Business.Models
 	{
 		public Guid CompanyId { get; set; }
 		public Guid ContactId { get; set; }
+		public Guid CollaboratorId { get; set; }
 		public string PublicPlace { get; set; }
 		public string Apt_Suite_Unit { get; set; }
 		public string City { get; set; }
@@ -15,5 +16,6 @@ namespace Vm.Pm.Business.Models
 		public TypeAddress TypeAddress { get; set; }
 		public Company Company { get; set; }
 		public Contact Contact { get; set; }
+		public Collaborator Collaborator { get; set; }
 	}
 }

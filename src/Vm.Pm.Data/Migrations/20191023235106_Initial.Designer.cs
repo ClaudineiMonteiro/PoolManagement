@@ -10,8 +10,8 @@ using Vm.Pm.Data.Context;
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    [Migration("20191023185440_Inicial")]
-    partial class Inicial
+    [Migration("20191023235106_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,9 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("varchar(20)");
+
+                    b.Property<Guid>("CollaboratorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
@@ -66,11 +69,42 @@ namespace Vm.Pm.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CollaboratorId");
+
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("ContactId");
 
                     b.ToTable("Adresses");
+                });
+
+            modelBuilder.Entity("Vm.Pm.Business.Models.Collaborator", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<DateTime>("RegistrationDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("Collaborators");
                 });
 
             modelBuilder.Entity("Vm.Pm.Business.Models.Company", b =>
@@ -115,6 +149,9 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("CollaboratorId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CompanyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -134,6 +171,8 @@ namespace Vm.Pm.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CollaboratorId");
+
                     b.HasIndex("CompanyId");
 
                     b.ToTable("Contacts");
@@ -147,6 +186,9 @@ namespace Vm.Pm.Data.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
+
+                    b.Property<Guid?>("CollaboratorId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CompanyId")
                         .HasColumnType("uniqueidentifier");
@@ -169,6 +211,8 @@ namespace Vm.Pm.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CollaboratorId");
+
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("ContactId");
@@ -178,6 +222,11 @@ namespace Vm.Pm.Data.Migrations
 
             modelBuilder.Entity("Vm.Pm.Business.Models.Address", b =>
                 {
+                    b.HasOne("Vm.Pm.Business.Models.Collaborator", "Collaborator")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CollaboratorId")
+                        .IsRequired();
+
                     b.HasOne("Vm.Pm.Business.Models.Company", "Company")
                         .WithMany("Addresses")
                         .HasForeignKey("CompanyId")
@@ -189,8 +238,21 @@ namespace Vm.Pm.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Vm.Pm.Business.Models.Collaborator", b =>
+                {
+                    b.HasOne("Vm.Pm.Business.Models.Company", "Company")
+                        .WithMany("Collaborators")
+                        .HasForeignKey("CompanyId")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Vm.Pm.Business.Models.Contact", b =>
                 {
+                    b.HasOne("Vm.Pm.Business.Models.Collaborator", "Collaborator")
+                        .WithMany("Contacts")
+                        .HasForeignKey("CollaboratorId")
+                        .IsRequired();
+
                     b.HasOne("Vm.Pm.Business.Models.Company", "Company")
                         .WithMany("Contacts")
                         .HasForeignKey("CompanyId")
@@ -199,6 +261,10 @@ namespace Vm.Pm.Data.Migrations
 
             modelBuilder.Entity("Vm.Pm.Business.Models.Phone", b =>
                 {
+                    b.HasOne("Vm.Pm.Business.Models.Collaborator", "Collaborator")
+                        .WithMany("Phones")
+                        .HasForeignKey("CollaboratorId");
+
                     b.HasOne("Vm.Pm.Business.Models.Company", "Company")
                         .WithMany("Phones")
                         .HasForeignKey("CompanyId");

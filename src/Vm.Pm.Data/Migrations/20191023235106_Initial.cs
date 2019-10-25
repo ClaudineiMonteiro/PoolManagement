@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Vm.Pm.Data.Migrations
 {
-    public partial class Inicial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +26,28 @@ namespace Vm.Pm.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Collaborators",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    RegistrationDate = table.Column<DateTime>(nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(nullable: true),
+                    Active = table.Column<bool>(nullable: false),
+                    CompanyId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(type: "varchar(200)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Collaborators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Collaborators_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Contacts",
                 columns: table => new
                 {
@@ -34,12 +56,19 @@ namespace Vm.Pm.Data.Migrations
                     LastUpdatedDate = table.Column<DateTime>(nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     CompanyId = table.Column<Guid>(nullable: false),
+                    CollaboratorId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(type: "varchar(200)", nullable: false),
                     Email = table.Column<string>(type: "varchar(200)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contacts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contacts_Collaborators_CollaboratorId",
+                        column: x => x.CollaboratorId,
+                        principalTable: "Collaborators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Contacts_Companies_CompanyId",
                         column: x => x.CompanyId,
@@ -58,6 +87,7 @@ namespace Vm.Pm.Data.Migrations
                     Active = table.Column<bool>(nullable: false),
                     CompanyId = table.Column<Guid>(nullable: false),
                     ContactId = table.Column<Guid>(nullable: false),
+                    CollaboratorId = table.Column<Guid>(nullable: false),
                     PublicPlace = table.Column<string>(type: "varchar(200)", nullable: false),
                     Apt_Suite_Unit = table.Column<string>(type: "varchar(20)", nullable: true),
                     City = table.Column<string>(type: "varchar(20)", nullable: false),
@@ -68,6 +98,12 @@ namespace Vm.Pm.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Adresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Adresses_Collaborators_CollaboratorId",
+                        column: x => x.CollaboratorId,
+                        principalTable: "Collaborators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Adresses_Companies_CompanyId",
                         column: x => x.CompanyId,
@@ -92,12 +128,19 @@ namespace Vm.Pm.Data.Migrations
                     Active = table.Column<bool>(nullable: false),
                     CompanyId = table.Column<Guid>(nullable: true),
                     ContactId = table.Column<Guid>(nullable: true),
+                    CollaboratorId = table.Column<Guid>(nullable: true),
                     Number = table.Column<string>(type: "varchar(11)", nullable: false),
                     TypePhone = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Phones", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Phones_Collaborators_CollaboratorId",
+                        column: x => x.CollaboratorId,
+                        principalTable: "Collaborators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Phones_Companies_CompanyId",
                         column: x => x.CompanyId,
@@ -113,6 +156,11 @@ namespace Vm.Pm.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Adresses_CollaboratorId",
+                table: "Adresses",
+                column: "CollaboratorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Adresses_CompanyId",
                 table: "Adresses",
                 column: "CompanyId");
@@ -123,9 +171,24 @@ namespace Vm.Pm.Data.Migrations
                 column: "ContactId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Collaborators_CompanyId",
+                table: "Collaborators",
+                column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Contacts_CollaboratorId",
+                table: "Contacts",
+                column: "CollaboratorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contacts_CompanyId",
                 table: "Contacts",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Phones_CollaboratorId",
+                table: "Phones",
+                column: "CollaboratorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phones_CompanyId",
@@ -148,6 +211,9 @@ namespace Vm.Pm.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contacts");
+
+            migrationBuilder.DropTable(
+                name: "Collaborators");
 
             migrationBuilder.DropTable(
                 name: "Companies");

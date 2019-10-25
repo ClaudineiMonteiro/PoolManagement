@@ -15,5 +15,6 @@ namespace Vm.Pm.App.Data
 		}
 		public DbSet<Vm.Pm.App.ViewModels.ContactViewModel> ContactViewModel { get; set; }
 		public DbSet<Vm.Pm.App.ViewModels.PhoneViewModel> PhoneViewModel { get; set; }
+		public DbSet<Vm.Pm.App.ViewModels.CollaboratorViewModel> CollaboratorViewModel { get; set; }
 	}
 }

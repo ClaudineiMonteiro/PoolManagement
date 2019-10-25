@@ -10,6 +10,7 @@ namespace Vm.Pm.App.AutoMapper
 		{
 			CreateMap<Company, CompanyViewModel>().ReverseMap();
 			CreateMap<Contact, ContactViewModel>().ReverseMap();
+			CreateMap<Collaborator, CollaboratorViewModel>().ReverseMap();
 			CreateMap<Phone, PhoneViewModel>().ReverseMap();
 			CreateMap<Address, AddressViewModel>().ReverseMap();
 		}

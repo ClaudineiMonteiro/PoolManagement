@@ -42,7 +42,7 @@ namespace Vm.Pm.App.Controllers
 			return View(_mapper.Map<ContactViewModel>(await _contactRepository.GetAll()));
 		}
 
-		[Route("data-of-contact/{id:guid}")]
+		[Route("detail-of-contact/{id:guid}")]
 		public async Task<IActionResult> Details(Guid id)
 		{
 			var contactViewModel = _mapper.Map<ContactViewModel>(await _contactRepository.GetById(id));

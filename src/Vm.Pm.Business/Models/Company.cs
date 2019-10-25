@@ -11,5 +11,6 @@ namespace Vm.Pm.Business.Models
 		public IEnumerable<Contact> Contacts { get; set; }
 		public IEnumerable<Phone> Phones { get; set; }
 		public IEnumerable<Address> Addresses { get; set; }
+		public IEnumerable<Collaborator> Collaborators { get; set; }
 	}
 }
