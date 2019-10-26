@@ -34,7 +34,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("list-of-collaborators")]
 		public async Task<IActionResult> Index()
 		{
-			return View(_mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetAll()));
+			return View(_mapper.Map<IEnumerable<CollaboratorViewModel>>(await _collaboratorRepository.GetAll()));
 		}
 
 		[Route("details-of-collaborator/{id:guid}")]
