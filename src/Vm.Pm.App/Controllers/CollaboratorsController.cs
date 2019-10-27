@@ -95,6 +95,8 @@ namespace Vm.Pm.App.Controllers
 				return NotFound();
 			}
 
+			collaboratorViewModel = await FillCollaborator(collaboratorViewModel);
+
 			return View(collaboratorViewModel);
 		}
 
