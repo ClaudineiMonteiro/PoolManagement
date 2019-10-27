@@ -19,22 +19,26 @@ namespace Vm.Pm.App.Controllers
 	{
 		private readonly ICollaboratorService _collaboratorService;
 		private readonly ICollaboratorRepository _collaboratorRepository;
+		private readonly ICompanyRepository _companyRepository;
 		private readonly IMapper _mapper;
 
 		public CollaboratorsController(ICollaboratorService collaboratorService,
 			ICollaboratorRepository collaboratorRepository,
+			ICompanyRepository companyRepository,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
 			_collaboratorService = collaboratorService;
 			_collaboratorRepository = collaboratorRepository;
+			_companyRepository = companyRepository;
 			_mapper = mapper;
 		}
 
 		[Route("list-of-collaborators")]
 		public async Task<IActionResult> Index()
 		{
-			return View(_mapper.Map<IEnumerable<CollaboratorViewModel>>(await _collaboratorRepository.GetAll()));
+			var collaboratorsViewModel = _mapper.Map<IEnumerable<CollaboratorViewModel>>(await _collaboratorRepository.GetAll());
+			return View(collaboratorsViewModel);
 		}
 
 		[Route("details-of-collaborator/{id:guid}")]
@@ -51,15 +55,25 @@ namespace Vm.Pm.App.Controllers
 		}
 
 		[Route("new-collaborator")]
-		public IActionResult Create()
+		public async Task<IActionResult> Create()
 		{
-			return View();
+			var collaboratorViewModel = await FillCollaborator(new CollaboratorViewModel());
+			return View(collaboratorViewModel);
+		}
+
+		private async Task<CollaboratorViewModel> FillCollaborator(CollaboratorViewModel collaboratorViewModel)
+		{
+			var companies = _mapper.Map<IEnumerable<CompanyViewModel>>(await _companyRepository.GetAll());
+			collaboratorViewModel.Companies = companies;
+			return collaboratorViewModel;
 		}
 
 		[Route("new-collaborator")]
 		[HttpPost]
 		public async Task<IActionResult> Create(CollaboratorViewModel collaboratorViewModel)
 		{
+			collaboratorViewModel = await FillCollaborator(collaboratorViewModel);
+
 			if (!ModelState.IsValid) return View(collaboratorViewModel);
 
 			var collaborator = _mapper.Map<Collaborator>(collaboratorViewModel);
@@ -68,7 +82,7 @@ namespace Vm.Pm.App.Controllers
 
 			if (!ValidOperation()) return View(collaboratorViewModel);
 
-			return View("Index");
+			return RedirectToAction("Index");
 		}
 
 		[Route("edit-collaborator/{id:guid}")]

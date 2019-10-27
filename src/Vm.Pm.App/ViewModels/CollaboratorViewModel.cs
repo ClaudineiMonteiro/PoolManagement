@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Vm.Pm.Business.Interfaces;
 
 namespace Vm.Pm.App.ViewModels
 {
@@ -26,6 +28,6 @@ namespace Vm.Pm.App.ViewModels
 		public IEnumerable<PhoneViewModel> Phones { get; set; }
 		public IEnumerable<AddressViewModel> Adresses { get; set; }
 		public CompanyViewModel Company { get; set; }
-
+		public IEnumerable<CompanyViewModel> Companies { get; set; }
 	}
 }

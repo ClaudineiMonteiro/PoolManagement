@@ -47,5 +47,14 @@ namespace Vm.Pm.Data.Repository
 				.Include(a => a.Addresses)
 				.Where(c => c.CompanyId == companyId).ToListAsync();
 		}
+
+		public async override Task<List<Collaborator>> GetAll()
+		{
+			return await Db.Collaborators
+				.AsNoTracking()
+				.Include(c => c.Company)
+				.OrderBy(o => o.Name)
+				.ToListAsync();
+		}
 	}
 }
