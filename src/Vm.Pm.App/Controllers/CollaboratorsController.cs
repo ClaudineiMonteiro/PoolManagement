@@ -141,5 +141,11 @@ namespace Vm.Pm.App.Controllers
 
 			return RedirectToAction("Index");
 		}
+
+		[Route("new-phone-collaborator/{id:guid}")]
+		public IActionResult NewPhone(Guid id)
+		{
+			return PartialView("~/Views/Shared/Phone/_AddPhone.cshtml", new PhoneViewModel { CollaboratorId = id });
+		}
 	}
 }

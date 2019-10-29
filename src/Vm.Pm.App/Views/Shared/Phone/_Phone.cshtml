@@ -1,0 +1,14 @@
+﻿@model Vm.Pm.App.ViewModels.PhoneViewModel
+
+<div class="form-group">
+	<label asp-for="Number" class="control-label"></label>
+	<input asp-for="Number" class="form-control" />
+	<span asp-validation-for="Number" class="text-danger"></span>
+</div>
+<div class="form-group">
+	<label asp-for="TypePhoneId" class="control-label"></label>
+	<select asp-for="TypePhoneId" class="form-control" asp-items="@(new SelectList(Model.TypePhones, "Id", "Description"))">
+		<option></option>
+	</select>
+	<span asp-validation-for="TypePhoneId" class="text-danger"></span>
+</div>
