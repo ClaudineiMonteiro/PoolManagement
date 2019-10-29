@@ -147,5 +147,19 @@ namespace Vm.Pm.App.Controllers
 		{
 			return PartialView("~/Views/Shared/Phone/_AddPhone.cshtml", new PhoneViewModel { CollaboratorId = id });
 		}
+
+		[Route("addnew-phone-collaborator")]
+		[HttpPost]
+		public async Task<IActionResult> AddNewPhone(PhoneViewModel phoneViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("_PhoneList", phoneViewModel);
+
+			await _collaboratorService.AddPhone(_mapper.Map<Phone>(phoneViewModel));
+
+			if (!ValidOperation()) return PartialView("_AddPhone", phoneViewModel);
+
+			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
+			return Json(new { success = true, url });
+		}
 	}
 }
