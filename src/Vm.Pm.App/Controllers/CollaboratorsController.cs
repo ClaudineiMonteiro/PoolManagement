@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,17 +21,23 @@ namespace Vm.Pm.App.Controllers
 		private readonly ICollaboratorService _collaboratorService;
 		private readonly ICollaboratorRepository _collaboratorRepository;
 		private readonly ICompanyRepository _companyRepository;
+		private readonly IPhoneRepository _phoneRepository;
+		private readonly IPhoneService _phoneService;
 		private readonly IMapper _mapper;
 
 		public CollaboratorsController(ICollaboratorService collaboratorService,
 			ICollaboratorRepository collaboratorRepository,
 			ICompanyRepository companyRepository,
+			IPhoneRepository phoneRepository,
+			IPhoneService phoneService,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
 			_collaboratorService = collaboratorService;
 			_collaboratorRepository = collaboratorRepository;
 			_companyRepository = companyRepository;
+			_phoneRepository = phoneRepository;
+			_phoneService = phoneService;
 			_mapper = mapper;
 		}
 
@@ -88,7 +95,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("edit-collaborator/{id:guid}")]
 		public async Task<IActionResult> Edit(Guid id)
 		{
-			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetById(id));
+			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddresses(id));
 
 			if (collaboratorViewModel == null)
 			{
@@ -142,6 +149,21 @@ namespace Vm.Pm.App.Controllers
 			return RedirectToAction("Index");
 		}
 
+		#region Phone
+		[AllowAnonymous]
+		[Route("get-phones-collaborator/{id:guid}")]
+		public async Task<IActionResult> GetPhonesCollaborator(Guid id)
+		{
+			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddresses(id));
+
+			if (collaboratorViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Collaborator/_PhonesListCollaborator.cshtml", collaboratorViewModel);
+		}
+
 		[Route("new-phone-collaborator/{id:guid}")]
 		public IActionResult NewPhone(Guid id)
 		{
@@ -152,14 +174,83 @@ namespace Vm.Pm.App.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddNewPhone(PhoneViewModel phoneViewModel)
 		{
-			if (!ModelState.IsValid) return PartialView("_PhoneList", phoneViewModel);
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Phone/_PhoneList", phoneViewModel);
 
 			await _collaboratorService.AddPhone(_mapper.Map<Phone>(phoneViewModel));
 
-			if (!ValidOperation()) return PartialView("_AddPhone", phoneViewModel);
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_AddPhone", phoneViewModel);
 
-			var url = Url.Action("GetPhonesContact", "Contacts", new { id = phoneViewModel.ContactId });
+			var url = Url.Action("GetPhonesCollaborator", "Collaborator", new { id = phoneViewModel.CollaboratorId });
 			return Json(new { success = true, url });
 		}
+
+		[Route("detail-phone-collaborator/{id:guid}")]
+		public async Task<IActionResult> DetailPhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Phone/_DetailPhone.cshtml", phoneViewModel);
+		}
+
+		[Route("edit-phone-collaborator/{id:guid}")]
+		public async Task<IActionResult> EditPhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
+		}
+
+		[Route("save-edit-phone-collaborator")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SaveEditPhone(PhoneViewModel phoneViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
+
+			await _phoneService.Update(_mapper.Map<Phone>(phoneViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
+
+			var url = Url.Action("GetPhonesCollaborator", "Collaborator", new { id = phoneViewModel.CollaboratorId });
+			return Json(new { success = true, url });
+		}
+
+		[Route("delete-phone-collaborator/{id:guid}")]
+		public async Task<IActionResult> DeletePhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Phone/_DeletePhone.cshtml", phoneViewModel);
+		}
+
+		[Route("confirme-delete-phone-collaborator")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ConfirmeDeletePhone(PhoneViewModel phoneViewModel)
+		{
+
+			await _phoneRepository.Remove(phoneViewModel.Id);
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_DeletePhone.cshtml", phoneViewModel);
+
+			var url = Url.Action("GetPhonesCollaborator", "Collaborator", new { id = phoneViewModel.CollaboratorId });
+			return Json(new { success = true, url });
+		} 
+		#endregion
 	}
 }

@@ -13,13 +13,16 @@ namespace Vm.Pm.Business.Services
 	{
 		private readonly ICollaboratorRepository _collaboratorRepository;
 		private readonly IPhoneRepository _phoneRepository;
+		private readonly IPhoneService _phoneService;
 
 		public CollaboratorService(ICollaboratorRepository collaboratorRepository,
 			INotifier notifier,
-			IPhoneRepository phoneRepository) : base(notifier)
+			IPhoneRepository phoneRepository,
+			IPhoneService phoneService) : base(notifier)
 		{
 			_collaboratorRepository = collaboratorRepository;
 			_phoneRepository = phoneRepository;
+			_phoneService = phoneService;
 		}
 
 		public async Task Add(Collaborator collaborator)
@@ -45,7 +48,7 @@ namespace Vm.Pm.Business.Services
 		{
 			if (!PerformValidation(new PhoneValidation(), phone)) return;
 
-			await _phoneRepository.Add(phone);
+			await _phoneService.Add(phone);
 		}
 
 
@@ -67,6 +70,7 @@ namespace Vm.Pm.Business.Services
 		{
 			_collaboratorRepository?.Dispose();
 			_phoneRepository?.Dispose();
+			_phoneService?.Dispose();
 		}
 	}
 }
