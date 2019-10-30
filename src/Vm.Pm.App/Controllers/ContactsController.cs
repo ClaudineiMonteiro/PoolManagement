@@ -142,6 +142,7 @@ namespace Vm.Pm.App.Controllers
 			return View("Create", new ContactViewModel { CompanyId = id });
 		}
 
+		#region Phone
 		[AllowAnonymous]
 		[Route("get-phone-contact/{id:guid}")]
 		public async Task<IActionResult> GetPhone(Guid id)
@@ -191,7 +192,7 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 
-		//[Route("delete-phone-contact/{id:guid}")]
+		[Route("delete-phone-contact/{id:guid}")]
 		public async Task<IActionResult> DeletePhone(Guid id)
 		{
 			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
@@ -204,7 +205,7 @@ namespace Vm.Pm.App.Controllers
 			return PartialView("_DeletePhone", phoneViewModel);
 		}
 
-		//[Route("confirme-delete-phone-contact")]
+		[Route("confirme-delete-phone-contact")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeletePhone(PhoneViewModel phoneViewModel)
@@ -218,7 +219,7 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 
-		//[Route("edit-phone-contact/{id:guid}")]
+		[Route("edit-phone-contact/{id:guid}")]
 		public async Task<IActionResult> EditPhone(Guid id)
 		{
 			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
@@ -231,7 +232,7 @@ namespace Vm.Pm.App.Controllers
 			return PartialView("_EditPhone", phoneViewModel);
 		}
 
-		//[Route("confirme-edit-phone-contact")]
+		[Route("confirme-edit-phone-contact")]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> EditPhone(PhoneViewModel phoneViewModel)
@@ -257,6 +258,7 @@ namespace Vm.Pm.App.Controllers
 			}
 
 			return PartialView("_DetailPhone", phoneViewModel);
-		}
+		} 
+		#endregion
 	}
 }
