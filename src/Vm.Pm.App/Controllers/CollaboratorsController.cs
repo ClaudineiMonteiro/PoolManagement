@@ -18,20 +18,23 @@ namespace Vm.Pm.App.Controllers
 {
 	public class CollaboratorsController : BaseController
 	{
+		#region Attributes
 		private readonly ICollaboratorService _collaboratorService;
 		private readonly ICollaboratorRepository _collaboratorRepository;
 		private readonly ICompanyRepository _companyRepository;
 		private readonly IPhoneRepository _phoneRepository;
 		private readonly IPhoneService _phoneService;
 		private readonly IMapper _mapper;
+		#endregion
 
+		#region Builders
 		public CollaboratorsController(ICollaboratorService collaboratorService,
-			ICollaboratorRepository collaboratorRepository,
-			ICompanyRepository companyRepository,
-			IPhoneRepository phoneRepository,
-			IPhoneService phoneService,
-			IMapper mapper,
-			INotifier notifier) : base(notifier)
+	ICollaboratorRepository collaboratorRepository,
+	ICompanyRepository companyRepository,
+	IPhoneRepository phoneRepository,
+	IPhoneService phoneService,
+	IMapper mapper,
+	INotifier notifier) : base(notifier)
 		{
 			_collaboratorService = collaboratorService;
 			_collaboratorRepository = collaboratorRepository;
@@ -41,6 +44,9 @@ namespace Vm.Pm.App.Controllers
 			_mapper = mapper;
 		}
 
+		#endregion
+
+		#region Methods
 		[Route("list-of-collaborators")]
 		public async Task<IActionResult> Index()
 		{
@@ -148,6 +154,8 @@ namespace Vm.Pm.App.Controllers
 
 			return RedirectToAction("Index");
 		}
+
+		#endregion
 
 		#region Phone
 		[AllowAnonymous]
