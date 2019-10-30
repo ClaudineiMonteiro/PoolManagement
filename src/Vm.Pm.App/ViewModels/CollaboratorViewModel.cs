@@ -26,7 +26,7 @@ namespace Vm.Pm.App.ViewModels
 
 		public IEnumerable<ContactViewModel> Contacts { get; set; }
 		public IEnumerable<PhoneViewModel> Phones { get; set; }
-		public IEnumerable<AddressViewModel> Adresses { get; set; }
+		public IEnumerable<AddressViewModel> Addresses { get; set; }
 		public CompanyViewModel Company { get; set; }
 		public IEnumerable<CompanyViewModel> Companies { get; set; }
 	}

@@ -1,0 +1,7 @@
+﻿@model Vm.Pm.App.ViewModels.CollaboratorViewModel
+
+<p supress-by-claim-name="Address" supress-by-claim-value="Add">
+	<a asp-action="NewAddress" asp-route-id="@Model.Id" class="btn btn-info" data-modal="">Novo Address</a>
+</p>
+
+<partial name="~/Views/Shared/Address/_AddressList.cshtml" model="@Model.Addresses" />

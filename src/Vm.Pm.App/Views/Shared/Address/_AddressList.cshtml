@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Vm.Pm.App.ViewModels.AddressViewModel>
+
+<table class="table table-hover">
+	<thead class="thead-dark">
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.FirstOrDefault().PublicPlace)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.FirstOrDefault().City)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.FirstOrDefault().State_Province)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.FirstOrDefault().ZipPostalCode)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.PublicPlace)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.City)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.State_Province)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.ZipPostalCode)
+			</td>
+			<td class="text-right">
+				<a class="btn btn-warning" asp-action="DetailAddress" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-search"></spam> </a>
+				<a disable-by-claim-name="Phone" disable-by-claim-value="Edit" class="btn btn-info" asp-action="EditAddress" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-pencil-alt"></spam> </a>
+				<a disable-by-claim-name="Phone" disable-by-claim-value="Remove" class="btn btn-danger" asp-action="DeleteAddress" asp-route-id="@item.Id" data-modal=""><spam class="fa fa-trash"></spam> </a>
+			</td>
+		</tr>
+		}
+	</tbody>
+</table>

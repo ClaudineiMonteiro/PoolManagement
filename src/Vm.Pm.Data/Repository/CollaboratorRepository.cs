@@ -32,7 +32,7 @@ namespace Vm.Pm.Data.Repository
 
 		public async Task<Collaborator> GetCollaboratorPhonesAddresses(Guid id)
 		{
-			return await Db.Collaborators
+				return await Db.Collaborators
 				.AsNoTracking()
 				.Include(a => a.Phones)
 				.Include(a => a.Addresses)

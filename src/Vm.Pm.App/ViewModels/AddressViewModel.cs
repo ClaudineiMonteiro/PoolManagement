@@ -37,9 +37,11 @@ namespace Vm.Pm.App.ViewModels
 		public int TypeAddress { get; set; }
 
 		[HiddenInput]
-		public Guid CompanyId { get; set; }
+		public Guid? CompanyId { get; set; }
 		[HiddenInput]
-		public Guid ContactId { get; set; }
+		public Guid? ContactId { get; set; }
+		[HiddenInput]
+		public Guid? CollaboratorId { get; set; }
 
 	}
 }
