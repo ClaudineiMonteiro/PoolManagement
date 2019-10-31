@@ -22,8 +22,6 @@ namespace Vm.Pm.App.Controllers
 		private readonly ICollaboratorService _collaboratorService;
 		private readonly ICollaboratorRepository _collaboratorRepository;
 		private readonly ICompanyRepository _companyRepository;
-		private readonly IPhoneRepository _phoneRepository;
-		private readonly IPhoneService _phoneService;
 		private readonly IMapper _mapper;
 		#endregion
 
@@ -31,16 +29,12 @@ namespace Vm.Pm.App.Controllers
 		public CollaboratorsController(ICollaboratorService collaboratorService,
 			ICollaboratorRepository collaboratorRepository,
 			ICompanyRepository companyRepository,
-			IPhoneRepository phoneRepository,
-			IPhoneService phoneService,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
 			_collaboratorService = collaboratorService;
 			_collaboratorRepository = collaboratorRepository;
 			_companyRepository = companyRepository;
-			_phoneRepository = phoneRepository;
-			_phoneService = phoneService;
 			_mapper = mapper;
 		}
 
@@ -195,7 +189,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("detail-phone-collaborator/{id:guid}")]
 		public async Task<IActionResult> DetailPhone(Guid id)
 		{
-			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _collaboratorService.GetPhoneById(id));
 
 			if (phoneViewModel == null)
 			{
@@ -208,7 +202,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("edit-phone-collaborator/{id:guid}")]
 		public async Task<IActionResult> EditPhone(Guid id)
 		{
-			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _collaboratorService.GetPhoneById(id));
 
 			if (phoneViewModel == null)
 			{
@@ -225,7 +219,7 @@ namespace Vm.Pm.App.Controllers
 		{
 			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
 
-			await _phoneService.Update(_mapper.Map<Phone>(phoneViewModel));
+			await _collaboratorService.UpdatePhone(_mapper.Map<Phone>(phoneViewModel));
 
 			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
 
@@ -236,7 +230,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("delete-phone-collaborator/{id:guid}")]
 		public async Task<IActionResult> DeletePhone(Guid id)
 		{
-			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _phoneRepository.GetById(id));
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _collaboratorService.GetPhoneById(id));
 
 			if (phoneViewModel == null)
 			{
@@ -251,8 +245,7 @@ namespace Vm.Pm.App.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ConfirmeDeletePhone(PhoneViewModel phoneViewModel)
 		{
-
-			await _phoneRepository.Remove(phoneViewModel.Id);
+			await _collaboratorService.RemovePhone(phoneViewModel.Id);
 
 			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_DeletePhone.cshtml", phoneViewModel);
 

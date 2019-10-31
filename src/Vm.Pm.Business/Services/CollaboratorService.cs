@@ -50,12 +50,30 @@ namespace Vm.Pm.Business.Services
 			await _collaboratorRepository.Remove(id);
 		}
 
+		#region Phone
+		public async Task<Phone> GetPhoneById(Guid id)
+		{
+			return await _phoneRepository.GetById(id);
+		}
 		public async Task AddPhone(Phone phone)
 		{
 			if (!PerformValidation(new PhoneValidation(), phone)) return;
 
 			await _phoneService.Add(phone);
 		}
+		public async Task UpdatePhone(Phone phone)
+		{
+			if (!PerformValidation(new PhoneValidation(), phone)) return;
+
+			await _phoneService.Update(phone);
+		}
+		public async Task RemovePhone(Guid id)
+		{
+			await _phoneService.Remove(id);
+		}
+
+
+		#endregion
 
 		#region Address
 		public async Task AddAddress(Address address)

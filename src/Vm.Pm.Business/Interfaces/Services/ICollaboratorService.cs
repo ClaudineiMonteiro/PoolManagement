@@ -10,9 +10,12 @@ namespace Vm.Pm.Business.Interfaces.Services
 		Task Update(Collaborator collaborator);
 		Task Remove(Guid id);
 
+		Task<Phone> GetPhoneById(Guid id);
 		Task AddPhone(Phone phone);
-		Task AddAddress(Address address);
+		Task UpdatePhone(Phone phone);
+		Task RemovePhone(Guid id);
 
+		Task AddAddress(Address address);
 		Task<Address> GetAddressById(Guid id);
 		Task UpdateAddress(Address address);
 		Task RemoveAddress(Guid id);
