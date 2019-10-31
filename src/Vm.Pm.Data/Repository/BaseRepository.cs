@@ -23,16 +23,8 @@ namespace Vm.Pm.Data.Repository
 
 		public virtual async Task Add(TEntity entity)
 		{
-			try
-			{
-				DbSet.Add(entity);
-				await SaveChanges();
-			}
-			catch (Exception ex)
-			{
-
-				throw new Exception(ex.Message);
-			}
+			DbSet.Add(entity);
+			await SaveChanges();
 		}
 
 		public virtual async Task<List<TEntity>> GetAll()

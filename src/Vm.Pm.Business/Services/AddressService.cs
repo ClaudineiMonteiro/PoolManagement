@@ -43,7 +43,7 @@ namespace Vm.Pm.Business.Services
 
 			if (!PerformValidation(new AddressValidation(), address)) isValid = false;
 
-			if (_addressRepository.Search(p => p.PublicPlace == address.PublicPlace && p.City == address.City).Result.Any())
+			if (_addressRepository.Search(a => a.PublicPlace == address.PublicPlace && a.City == address.City && a.Id != address.Id).Result.Any())
 			{
 				Notify("Este Address já esta cadastrado!");
 				isValid = false;

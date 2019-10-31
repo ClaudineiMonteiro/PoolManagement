@@ -24,23 +24,26 @@ namespace Vm.Pm.App.Controllers
 		private readonly ICompanyRepository _companyRepository;
 		private readonly IPhoneRepository _phoneRepository;
 		private readonly IPhoneService _phoneService;
+		private readonly IAddressRepository _addressRepository;
 		private readonly IMapper _mapper;
 		#endregion
 
 		#region Builders
 		public CollaboratorsController(ICollaboratorService collaboratorService,
-	ICollaboratorRepository collaboratorRepository,
-	ICompanyRepository companyRepository,
-	IPhoneRepository phoneRepository,
-	IPhoneService phoneService,
-	IMapper mapper,
-	INotifier notifier) : base(notifier)
+			ICollaboratorRepository collaboratorRepository,
+			ICompanyRepository companyRepository,
+			IPhoneRepository phoneRepository,
+			IPhoneService phoneService,
+			IAddressRepository addressRepository,
+			IMapper mapper,
+			INotifier notifier) : base(notifier)
 		{
 			_collaboratorService = collaboratorService;
 			_collaboratorRepository = collaboratorRepository;
 			_companyRepository = companyRepository;
 			_phoneRepository = phoneRepository;
 			_phoneService = phoneService;
+			_addressRepository = addressRepository;
 			_mapper = mapper;
 		}
 
@@ -291,6 +294,34 @@ namespace Vm.Pm.App.Controllers
 			await _collaboratorService.AddAddress(_mapper.Map<Address>(addressViewModel));
 
 			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_AddAddress", addressViewModel);
+
+			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CollaboratorId });
+			return Json(new { success = true, url });
+		}
+
+		[Route("edit-address-collaborator/{id:guid}")]
+		public async Task<IActionResult> EditAddress(Guid id)
+		{
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _addressRepository.GetById(id));
+
+			if (addressViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Address/_EditAddress.cshtml", addressViewModel);
+		}
+
+		[Route("save-edit-address-collaborator")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SaveEditAddress(AddressViewModel addressViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Address/_EditAddress.cshtml", addressViewModel);
+
+			await _collaboratorService.UpdateAddress(_mapper.Map<Address>(addressViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_EditAddress.cshtml", addressViewModel);
 
 			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CollaboratorId });
 			return Json(new { success = true, url });

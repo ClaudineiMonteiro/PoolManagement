@@ -57,6 +57,7 @@ namespace Vm.Pm.Business.Services
 			await _phoneService.Add(phone);
 		}
 
+		#region Address
 		public async Task AddAddress(Address address)
 		{
 			if (!PerformValidation(new AddressValidation(), address)) return;
@@ -64,6 +65,14 @@ namespace Vm.Pm.Business.Services
 			await _addressService.Add(address);
 		}
 
+		public async Task UpdateAddress(Address address)
+		{
+			if (!PerformValidation(new AddressValidation(), address)) return;
+
+			await _addressService.Update(address);
+		}
+
+		#endregion
 		private bool IsValid(Collaborator collaborator)
 		{
 			bool isValid = true;
@@ -84,6 +93,7 @@ namespace Vm.Pm.Business.Services
 			_phoneRepository?.Dispose();
 			_phoneService?.Dispose();
 			_addressRepository?.Dispose();
+			_addressService?.Dispose();
 		}
 	}
 }
