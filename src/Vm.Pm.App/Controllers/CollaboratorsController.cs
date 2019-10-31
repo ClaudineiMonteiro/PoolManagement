@@ -258,7 +258,43 @@ namespace Vm.Pm.App.Controllers
 
 			var url = Url.Action("GetPhonesCollaborator", "Collaborator", new { id = phoneViewModel.CollaboratorId });
 			return Json(new { success = true, url });
-		} 
+		}
+		#endregion
+
+		#region Address
+		[AllowAnonymous]
+		[Route("get-addresses-collaborator/{id:guid}")]
+		public async Task<IActionResult> GetAddressesCollaborator(Guid id)
+		{
+			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddresses(id));
+
+			if (collaboratorViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Collaborator/_AddressesListCollaborator.cshtml", collaboratorViewModel);
+		}
+
+		[Route("new-address-collaborator/{id:guid}")]
+		public IActionResult NewAddress(Guid id)
+		{
+			return PartialView("~/Views/Shared/Address/_AddAddress.cshtml", new AddressViewModel { CollaboratorId = id });
+		}
+
+		[Route("addnew-address-collaborator")]
+		[HttpPost]
+		public async Task<IActionResult> AddNewAddress(AddressViewModel addressViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Address/_AddressList", addressViewModel);
+
+			await _collaboratorService.AddAddress(_mapper.Map<Address>(addressViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_AddAddress", addressViewModel);
+
+			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CollaboratorId });
+			return Json(new { success = true, url });
+		}
 		#endregion
 	}
 }

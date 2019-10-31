@@ -24,6 +24,7 @@ namespace Vm.Pm.App.Configurations
 			services.AddScoped<ICompanyService, CompanyService>();
 			services.AddScoped<IContactService, ContactService>();
 			services.AddScoped<IPhoneService, PhoneService>();
+			services.AddScoped<IAddressService, AddressService>();
 			services.AddScoped<ICollaboratorService, CollaboratorService>();
 
 			return services;

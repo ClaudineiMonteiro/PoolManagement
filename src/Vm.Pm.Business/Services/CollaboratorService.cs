@@ -14,15 +14,21 @@ namespace Vm.Pm.Business.Services
 		private readonly ICollaboratorRepository _collaboratorRepository;
 		private readonly IPhoneRepository _phoneRepository;
 		private readonly IPhoneService _phoneService;
+		private readonly IAddressRepository _addressRepository;
+		private readonly IAddressService _addressService;
 
 		public CollaboratorService(ICollaboratorRepository collaboratorRepository,
 			INotifier notifier,
 			IPhoneRepository phoneRepository,
-			IPhoneService phoneService) : base(notifier)
+			IPhoneService phoneService,
+			IAddressRepository addressRepository,
+			IAddressService addressService) : base(notifier)
 		{
 			_collaboratorRepository = collaboratorRepository;
 			_phoneRepository = phoneRepository;
 			_phoneService = phoneService;
+			_addressRepository = addressRepository;
+			_addressService = addressService;
 		}
 
 		public async Task Add(Collaborator collaborator)
@@ -51,6 +57,12 @@ namespace Vm.Pm.Business.Services
 			await _phoneService.Add(phone);
 		}
 
+		public async Task AddAddress(Address address)
+		{
+			if (!PerformValidation(new AddressValidation(), address)) return;
+
+			await _addressService.Add(address);
+		}
 
 		private bool IsValid(Collaborator collaborator)
 		{
@@ -71,6 +83,7 @@ namespace Vm.Pm.Business.Services
 			_collaboratorRepository?.Dispose();
 			_phoneRepository?.Dispose();
 			_phoneService?.Dispose();
+			_addressRepository?.Dispose();
 		}
 	}
 }

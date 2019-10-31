@@ -16,7 +16,7 @@ namespace Vm.Pm.App.ViewModels
 		public string PublicPlace { get; set; }
 		
 		[DisplayName("Complemento")]
-		public string? Apt_Suite_Unit { get; set; }
+		public string Apt_Suite_Unit { get; set; }
 		
 		[DisplayName("Cidade")]
 		[Required(ErrorMessage = "O Campo {0} é obrigatório")]

@@ -5,9 +5,9 @@ namespace Vm.Pm.Business.Models
 {
 	public class Address : Entity
 	{
-		public Guid CompanyId { get; set; }
-		public Guid ContactId { get; set; }
-		public Guid CollaboratorId { get; set; }
+		public Guid? CompanyId { get; set; }
+		public Guid? ContactId { get; set; }
+		public Guid? CollaboratorId { get; set; }
 		public string PublicPlace { get; set; }
 		public string Apt_Suite_Unit { get; set; }
 		public string City { get; set; }
