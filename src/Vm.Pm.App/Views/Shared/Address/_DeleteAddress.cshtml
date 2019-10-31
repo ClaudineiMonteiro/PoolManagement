@@ -1,6 +1,5 @@
-﻿@model Vm.Pm.App.ViewModels.PhoneViewModel
-
-@{ 
+﻿@model Vm.Pm.App.ViewModels.AddressViewModel
+@{
 	ViewData["Title"] = "Exclusão de Address";
 }
 
@@ -16,7 +15,7 @@
 		<input type="hidden" asp-for="CollaboratorId" />
 		<input type="hidden" asp-for="Id" />
 
-		<partial name="~/Views/Shared/Phone/_Phone.cshtml" />
+		<partial name="~/Views/Shared/Address/_Address.cshtml" />
 
 		<div class="modal-footer">
 			<div class="col-md-offset-2 col-md-10">

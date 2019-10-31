@@ -339,6 +339,33 @@ namespace Vm.Pm.App.Controllers
 			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CollaboratorId });
 			return Json(new { success = true, url });
 		}
+
+		[Route("delete-address-collaborator/{id:guid}")]
+		public async Task<IActionResult> DeleteAddress(Guid id)
+		{
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _addressRepository.GetById(id));
+
+			if (addressViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Address/_DeleteAddress.cshtml", addressViewModel);
+		}
+
+		[Route("confirme-delete-address-collaborator")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ConfirmeDeleteAddress(AddressViewModel addressViewModel)
+		{
+
+			await _collaboratorService.RemoveAddress(addressViewModel.Id);
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_DeleteAddress.cshtml", addressViewModel);
+
+			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CollaboratorId });
+			return Json(new { success = true, url });
+		}
 		#endregion
 	}
 }

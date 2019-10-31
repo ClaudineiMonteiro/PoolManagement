@@ -13,5 +13,6 @@ namespace Vm.Pm.Business.Interfaces.Services
 		Task AddPhone(Phone phone);
 		Task AddAddress(Address address);
 		Task UpdateAddress(Address address);
+		Task RemoveAddress(Guid id);
 	}
 }

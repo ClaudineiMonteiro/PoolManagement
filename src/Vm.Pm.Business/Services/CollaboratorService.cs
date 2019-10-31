@@ -72,6 +72,12 @@ namespace Vm.Pm.Business.Services
 			await _addressService.Update(address);
 		}
 
+		public async Task RemoveAddress(Guid id)
+		{
+			await _addressService.Remove(id);
+		}
+
+
 		#endregion
 		private bool IsValid(Collaborator collaborator)
 		{
