@@ -285,6 +285,19 @@ namespace Vm.Pm.App.Controllers
 			return PartialView("~/Views/Shared/Address/_AddAddress.cshtml", new AddressViewModel { CollaboratorId = id });
 		}
 
+		[Route("detail-address-collaborator/{id:guid}")]
+		public async Task<IActionResult> DetailAddress(Guid id)
+		{
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _addressRepository.GetById(id));
+
+			if (addressViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Address/_DetailAddress.cshtml", addressViewModel);
+		}
+
 		[Route("addnew-address-collaborator")]
 		[HttpPost]
 		public async Task<IActionResult> AddNewAddress(AddressViewModel addressViewModel)
