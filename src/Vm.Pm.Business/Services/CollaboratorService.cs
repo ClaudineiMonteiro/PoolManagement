@@ -65,6 +65,11 @@ namespace Vm.Pm.Business.Services
 			await _addressService.Add(address);
 		}
 
+		public async Task<Address> GetAddressById(Guid id)
+		{
+			return await _addressRepository.GetById(id);
+		}
+
 		public async Task UpdateAddress(Address address)
 		{
 			if (!PerformValidation(new AddressValidation(), address)) return;
@@ -75,9 +80,7 @@ namespace Vm.Pm.Business.Services
 		public async Task RemoveAddress(Guid id)
 		{
 			await _addressService.Remove(id);
-		}
-
-
+		}		
 		#endregion
 		private bool IsValid(Collaborator collaborator)
 		{
@@ -101,5 +104,6 @@ namespace Vm.Pm.Business.Services
 			_addressRepository?.Dispose();
 			_addressService?.Dispose();
 		}
+
 	}
 }

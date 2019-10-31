@@ -24,7 +24,6 @@ namespace Vm.Pm.App.Controllers
 		private readonly ICompanyRepository _companyRepository;
 		private readonly IPhoneRepository _phoneRepository;
 		private readonly IPhoneService _phoneService;
-		private readonly IAddressRepository _addressRepository;
 		private readonly IMapper _mapper;
 		#endregion
 
@@ -34,7 +33,6 @@ namespace Vm.Pm.App.Controllers
 			ICompanyRepository companyRepository,
 			IPhoneRepository phoneRepository,
 			IPhoneService phoneService,
-			IAddressRepository addressRepository,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
@@ -43,7 +41,6 @@ namespace Vm.Pm.App.Controllers
 			_companyRepository = companyRepository;
 			_phoneRepository = phoneRepository;
 			_phoneService = phoneService;
-			_addressRepository = addressRepository;
 			_mapper = mapper;
 		}
 
@@ -288,7 +285,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("detail-address-collaborator/{id:guid}")]
 		public async Task<IActionResult> DetailAddress(Guid id)
 		{
-			var addressViewModel = _mapper.Map<AddressViewModel>(await _addressRepository.GetById(id));
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _collaboratorService.GetAddressById(id));
 
 			if (addressViewModel == null)
 			{
@@ -315,7 +312,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("edit-address-collaborator/{id:guid}")]
 		public async Task<IActionResult> EditAddress(Guid id)
 		{
-			var addressViewModel = _mapper.Map<AddressViewModel>(await _addressRepository.GetById(id));
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _collaboratorService.GetAddressById(id));
 
 			if (addressViewModel == null)
 			{
@@ -343,7 +340,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("delete-address-collaborator/{id:guid}")]
 		public async Task<IActionResult> DeleteAddress(Guid id)
 		{
-			var addressViewModel = _mapper.Map<AddressViewModel>(await _addressRepository.GetById(id));
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _collaboratorService.GetAddressById(id));
 
 			if (addressViewModel == null)
 			{
@@ -358,7 +355,6 @@ namespace Vm.Pm.App.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ConfirmeDeleteAddress(AddressViewModel addressViewModel)
 		{
-
 			await _collaboratorService.RemoveAddress(addressViewModel.Id);
 
 			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_DeleteAddress.cshtml", addressViewModel);
