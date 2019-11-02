@@ -10,6 +10,7 @@ namespace Vm.Pm.Business.Interfaces
 		Task<IEnumerable<Collaborator>> GetCollaboratorsByCompany(Guid companyId);
 		Task<Collaborator> GetCollaboratorPhones(Guid id);
 		Task<Collaborator> GetCollaboratorAddresses(Guid id);
-		Task<Collaborator> GetCollaboratorPhonesAddresses(Guid id);
+		Task<Collaborator> GetCollaboratorContacts(Guid id);
+		Task<Collaborator> GetCollaboratorPhonesAddressesContacts(Guid id);
 	}
 }

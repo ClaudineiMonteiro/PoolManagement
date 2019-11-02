@@ -6,7 +6,7 @@ namespace Vm.Pm.Business.Models
 {
 	public class Contact : Entity
 	{
-		public Guid CompanyId { get; set; }
+		public Guid? CompanyId { get; set; }
 		public Guid? CollaboratorId { get; set; }
 		public string Name { get; set; }
 		public string Email { get; set; }

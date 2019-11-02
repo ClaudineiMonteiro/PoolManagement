@@ -142,6 +142,12 @@ namespace Vm.Pm.App.Controllers
 			return View("Create", new ContactViewModel { CompanyId = id });
 		}
 
+		[Route("add-contact-by-list-of-collaborator/{id:guid}")]
+		public ActionResult AddContactByListCollaborator(Guid id)
+		{
+			return View("Create", new ContactViewModel { CollaboratorId = id });
+		}
+
 		#region Phone
 		[AllowAnonymous]
 		[Route("get-phone-contact/{id:guid}")]

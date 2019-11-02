@@ -30,12 +30,21 @@ namespace Vm.Pm.Data.Repository
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 
-		public async Task<Collaborator> GetCollaboratorPhonesAddresses(Guid id)
+		public async Task<Collaborator> GetCollaboratorContacts(Guid id)
+		{
+			return await Db.Collaborators
+				.AsNoTracking()
+				.Include(a => a.Contacts)
+				.FirstOrDefaultAsync(c => c.Id == id);
+		}
+
+		public async Task<Collaborator> GetCollaboratorPhonesAddressesContacts(Guid id)
 		{
 				return await Db.Collaborators
 				.AsNoTracking()
-				.Include(a => a.Phones)
+				.Include(p => p.Phones)
 				.Include(a => a.Addresses)
+				.Include(c => c.Contacts)
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 

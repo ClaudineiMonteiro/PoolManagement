@@ -22,6 +22,10 @@ namespace Vm.Pm.Data.Mappings
 				.WithOne(c => c.Collaborator)
 				.HasForeignKey(f => f.CollaboratorId);
 
+			builder.HasMany(c => c.Contacts)
+				.WithOne(c => c.Collaborator)
+				.HasForeignKey(f => f.CollaboratorId);
+
 			builder.ToTable("Collaborators");
 		}
 	}

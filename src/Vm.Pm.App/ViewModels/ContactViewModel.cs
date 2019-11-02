@@ -23,9 +23,12 @@ namespace Vm.Pm.App.ViewModels
 		public bool Active { get; set; }
 
 		[HiddenInput]
-		public Guid CompanyId { get; set; }
-
+		public Guid? CompanyId { get; set; }
 		public CompanyViewModel Company { get; set; }
+
+		[HiddenInput]
+		public Guid? CollaboratorId { get; set; }
+		public CollaboratorViewModel Collaborator { get; set; }
 		public IEnumerable<PhoneViewModel> Phones { get; set; }
 		public IEnumerable<AddressViewModel> Adresses { get; set; }
 	}

@@ -95,7 +95,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("edit-collaborator/{id:guid}")]
 		public async Task<IActionResult> Edit(Guid id)
 		{
-			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddresses(id));
+			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddressesContacts(id));
 
 			if (collaboratorViewModel == null)
 			{
@@ -156,7 +156,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("get-phones-collaborator/{id:guid}")]
 		public async Task<IActionResult> GetPhonesCollaborator(Guid id)
 		{
-			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddresses(id));
+			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddressesContacts(id));
 
 			if (collaboratorViewModel == null)
 			{
@@ -259,7 +259,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("get-addresses-collaborator/{id:guid}")]
 		public async Task<IActionResult> GetAddressesCollaborator(Guid id)
 		{
-			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddresses(id));
+			var collaboratorViewModel = _mapper.Map<CollaboratorViewModel>(await _collaboratorRepository.GetCollaboratorPhonesAddressesContacts(id));
 
 			if (collaboratorViewModel == null)
 			{

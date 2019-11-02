@@ -47,7 +47,7 @@ namespace Vm.Pm.Business.Services
 
 		public async Task Remove(Guid id)
 		{
-			var collaborator = _collaboratorRepository.GetCollaboratorPhonesAddresses(id);
+			var collaborator = _collaboratorRepository.GetCollaboratorPhonesAddressesContacts(id);
 
 			foreach (var phone in collaborator.Result.Phones)
 			{
