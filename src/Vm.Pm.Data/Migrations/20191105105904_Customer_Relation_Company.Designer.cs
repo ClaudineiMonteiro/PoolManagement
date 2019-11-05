@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vm.Pm.Data.Context;
 
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    partial class PoolManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191105105904_Customer_Relation_Company")]
+    partial class Customer_Relation_Company
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

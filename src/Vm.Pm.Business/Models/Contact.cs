@@ -8,11 +8,13 @@ namespace Vm.Pm.Business.Models
 	{
 		public Guid? CompanyId { get; set; }
 		public Guid? CollaboratorId { get; set; }
+		public Guid? CustomerId { get; set; }
 		public string Name { get; set; }
 		public string Email { get; set; }
 		public IEnumerable<Phone> Phones { get; set; }
 		public IEnumerable<Address> Adresses { get; set; }
 		public Company Company { get; set; }
+		public Customer Customer { get; set; }
 		public Collaborator Collaborator { get; set; }
 	}
 }

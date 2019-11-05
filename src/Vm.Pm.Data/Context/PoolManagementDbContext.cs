@@ -16,6 +16,8 @@ namespace Vm.Pm.Data.Context
 		public DbSet<Contact> Contacts { get; set; }
 		public DbSet<Company> Companies { get; set; }
 		public DbSet<Collaborator> Collaborators { get; set; }
+		public DbSet<Customer> Customers { get; set; }
+		public DbSet<CollaboratorCustomer> CollaboratorCustomers { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vm.Pm.Data.Context;
 
 namespace Vm.Pm.Data.Migrations
 {
     [DbContext(typeof(PoolManagementDbContext))]
-    partial class PoolManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191102194627_Customer")]
+    partial class Customer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,9 +212,6 @@ namespace Vm.Pm.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("varchar(200)");
@@ -230,8 +229,6 @@ namespace Vm.Pm.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
 
                     b.ToTable("Customers");
                 });
@@ -336,14 +333,6 @@ namespace Vm.Pm.Data.Migrations
                     b.HasOne("Vm.Pm.Business.Models.Customer", "Customer")
                         .WithMany("Contacts")
                         .HasForeignKey("CustomerId");
-                });
-
-            modelBuilder.Entity("Vm.Pm.Business.Models.Customer", b =>
-                {
-                    b.HasOne("Vm.Pm.Business.Models.Company", "Company")
-                        .WithMany("Customers")
-                        .HasForeignKey("CompanyId")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Vm.Pm.Business.Models.Phone", b =>
