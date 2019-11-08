@@ -83,8 +83,6 @@ namespace Vm.Pm.Business.Services
 		{
 			await _phoneService.Remove(id);
 		}
-
-
 		#endregion
 
 		#region Address
@@ -134,6 +132,5 @@ namespace Vm.Pm.Business.Services
 			_addressRepository?.Dispose();
 			_addressService?.Dispose();
 		}
-
 	}
 }
