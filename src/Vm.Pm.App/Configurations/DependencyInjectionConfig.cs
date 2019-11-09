@@ -19,6 +19,7 @@ namespace Vm.Pm.App.Configurations
 			services.AddScoped<IPhoneRepository, PhoneRepository>();
 			services.AddScoped<IAddressRepository, AddressRepository>();
 			services.AddScoped<ICollaboratorRepository, CollaboratorRepository>();
+			services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 			services.AddScoped<INotifier, Notifier>();
 			services.AddScoped<ICompanyService, CompanyService>();
@@ -26,6 +27,7 @@ namespace Vm.Pm.App.Configurations
 			services.AddScoped<IPhoneService, PhoneService>();
 			services.AddScoped<IAddressService, AddressService>();
 			services.AddScoped<ICollaboratorService, CollaboratorService>();
+			services.AddScoped<ICustomerService, CustomerService>();
 
 			return services;
 		}
