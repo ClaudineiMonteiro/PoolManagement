@@ -1,13 +1,13 @@
 ﻿@model Vm.Pm.App.ViewModels.CustomerViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalhes do Customer";
 }
 
-<h1>Details</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>CustomerViewModel</h4>
+	<h4>Informações apenas de leitura</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -29,14 +29,14 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class = "col-sm-2">
-            @*@Html.DisplayNameFor(model => model.Company)*@
+            @Html.DisplayNameFor(model => model.Company)
         </dt>
         <dd class = "col-sm-10">
-            @*@Html.DisplayFor(model => model.Company.DocumentNumber)*@
+            @Html.DisplayFor(model => model.Company.DocumentNumber)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+	<a class="btn btn-dark" supress-by-claim-name="Customer" supress-by-claim-value="Edit" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+	<a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
 </div>
