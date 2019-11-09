@@ -14,9 +14,9 @@ namespace Vm.Pm.Data.Mappings
 				.WithMany(c => c.CollaboratorCustomers)
 				.HasForeignKey(f => f.CollaboratorId);
 
-			builder.HasOne(cc => cc.Customer)
-				.WithMany(c => c.CollaboratorCustomers)
-				.HasForeignKey(f => f.CustomerId);
+			//builder.HasOne(cc => cc.Customer)
+			//	.WithMany(c => c.CollaboratorCustomers)
+			//	.HasForeignKey(f => f.CustomerId);
 
 			builder.ToTable("CollaboratorCustomers");
 		}

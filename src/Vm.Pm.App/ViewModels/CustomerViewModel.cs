@@ -13,7 +13,8 @@ namespace Vm.Pm.App.ViewModels
 		public IEnumerable<ContactViewModel> Contacts { get; set; }
 		public IEnumerable<PhoneViewModel> Phones { get; set; }
 		public IEnumerable<AddressViewModel> Addresses { get; set; }
-		public IEnumerable<CollaboratorViewModel> Collaborators { get; set; }
+		public IEnumerable<CollaboratorCustomerViewModel> CollaboratorsCustomers { get; set; }
 		public CompanyViewModel Company { get; set; }
+		public IEnumerable<CompanyViewModel> Companies { get; set; }
 	}
 }

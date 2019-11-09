@@ -51,15 +51,15 @@ namespace Vm.Pm.Business.Services
 		{
 			var customer = _customerRepository.GetCustomerPhonesAddressesContactsCollaborators(id);
 
-			foreach (var phone in customer.Result.Phones)
-			{
-				await _phoneService.Remove(phone.Id);
-			}
+			//foreach (var phone in customer.Result.Phones)
+			//{
+			//	await _phoneService.Remove(phone.Id);
+			//}
 
-			foreach (var address in customer.Result.Addresses)
-			{
-				await _addressService.Remove(address.Id);
-			}
+			//foreach (var address in customer.Result.Addresses)
+			//{
+			//	await _addressService.Remove(address.Id);
+			//}
 
 			await _customerRepository.Remove(id);
 		}

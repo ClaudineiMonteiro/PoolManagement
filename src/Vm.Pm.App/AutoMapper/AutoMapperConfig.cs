@@ -13,6 +13,7 @@ namespace Vm.Pm.App.AutoMapper
 			CreateMap<Collaborator, CollaboratorViewModel>().ReverseMap();
 			CreateMap<Phone, PhoneViewModel>().ReverseMap();
 			CreateMap<Address, AddressViewModel>().ReverseMap();
+			CreateMap<Customer, CustomerViewModel>().ReverseMap();
 		}
 	}
 }

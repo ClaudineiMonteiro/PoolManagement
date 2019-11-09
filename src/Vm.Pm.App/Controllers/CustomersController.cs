@@ -21,6 +21,7 @@ namespace Vm.Pm.App.Controllers
 		private readonly ICustomerService _customerService;
 		private readonly ICustomerRepository _customerRepository;
 		private readonly ICollaboratorRepository _collaboratorRepository;
+		private readonly ICompanyRepository _companyRepository;
 		private readonly IMapper _mapper;
 
 		#endregion
@@ -28,12 +29,14 @@ namespace Vm.Pm.App.Controllers
 		public CustomersController(ICustomerService customerService,
 			ICustomerRepository customerRepository,
 			ICollaboratorRepository collaboratorRepository,
+			ICompanyRepository companyRepository,
 			IMapper mapper,
 			INotifier notifier) : base(notifier)
 		{
 			_customerService = customerService;
 			_customerRepository = customerRepository;
 			_collaboratorRepository = collaboratorRepository;
+			_companyRepository = companyRepository;
 			_mapper = mapper;
 		}
 
@@ -64,7 +67,7 @@ namespace Vm.Pm.App.Controllers
 		[Route("new-customer")]
 		public async Task<IActionResult> Create()
 		{
-			var customerViewmodel = await FillCollaborators(new CustomerViewModel());
+			var customerViewmodel = await FillDependency(new CustomerViewModel());
 			return View(customerViewmodel);
 		}
 
@@ -72,9 +75,9 @@ namespace Vm.Pm.App.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(CustomerViewModel customerViewModel)
 		{
-			customerViewModel = await FillCollaborators(new CustomerViewModel());
+			customerViewModel = await FillDependency(customerViewModel);
 
-			if (ModelState.IsValid) return View(customerViewModel);
+			if (!ModelState.IsValid) return View(customerViewModel);
 
 			var customer = _mapper.Map<Customer>(customerViewModel);
 
@@ -95,7 +98,7 @@ namespace Vm.Pm.App.Controllers
 				return NotFound();
 			}
 
-			customerViewModel = await FillCollaborators(customerViewModel);
+			customerViewModel = await FillDependency(customerViewModel);
 
 			return View(customerViewModel);
 		}
@@ -144,12 +147,15 @@ namespace Vm.Pm.App.Controllers
 			return RedirectToAction("Index");
 		}
 
-		private async Task<CustomerViewModel> FillCollaborators(CustomerViewModel customerViewModel)
+		private async Task<CustomerViewModel> FillDependency(CustomerViewModel customerViewModel)
 		{
 			var collaborators = _mapper.Map<IEnumerable<CollaboratorViewModel>>(await _collaboratorRepository.GetAll());
-			customerViewModel.Collaborators = collaborators;
-			return customerViewModel;
+			//customerViewModel.Collaborators = collaborators;
 
+			var companies = _mapper.Map<IEnumerable<CompanyViewModel>>(await _companyRepository.GetAll());
+			customerViewModel.Companies = companies;
+
+			return customerViewModel;
 		}
 	}
 	#endregion

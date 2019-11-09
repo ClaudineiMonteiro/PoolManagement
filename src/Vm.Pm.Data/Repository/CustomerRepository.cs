@@ -17,7 +17,7 @@ namespace Vm.Pm.Data.Repository
 		{
 			return await Db.Customers
 				.AsNoTracking()
-				.Include(a => a.Addresses)
+				//.Include(a => a.Addresses)
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 
@@ -25,7 +25,7 @@ namespace Vm.Pm.Data.Repository
 		{
 			return await Db.Customers
 				.AsNoTracking()
-				.Include(c => c.CollaboratorCustomers)
+				//.Include(c => c.CollaboratorCustomers)
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 
@@ -33,7 +33,7 @@ namespace Vm.Pm.Data.Repository
 		{
 			return await Db.Customers
 				.AsNoTracking()
-				.Include(c => c.Contacts)
+				//.Include(c => c.Contacts)
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 
@@ -41,7 +41,7 @@ namespace Vm.Pm.Data.Repository
 		{
 			return await Db.Customers
 				.AsNoTracking()
-				.Include(p => p.Phones)
+				//.Include(p => p.Phones)
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 
@@ -49,10 +49,10 @@ namespace Vm.Pm.Data.Repository
 		{
 			return await Db.Customers
 				.AsNoTracking()
-				.Include(p => p.Phones)
-				.Include(a => a.Addresses)
-				.Include(c => c.Contacts)
-				.Include(c => c.CollaboratorCustomers)
+				//.Include(p => p.Phones)
+				//.Include(a => a.Addresses)
+				//.Include(c => c.Contacts)
+				//.Include(c => c.CollaboratorCustomers)
 				.FirstOrDefaultAsync(c => c.Id == id);
 		}
 
@@ -60,8 +60,8 @@ namespace Vm.Pm.Data.Repository
 		{
 			return await Db.Customers
 				.AsNoTracking()
-				.Include(cc => cc.CollaboratorCustomers)
-				.Where(c => c.CollaboratorCustomers.FirstOrDefault(p => p.CollaboratorId == collaboratorId).CollaboratorId == collaboratorId)
+				//.Include(cc => cc.CollaboratorCustomers)
+				//.Where(c => c.CollaboratorCustomers.FirstOrDefault(p => p.CollaboratorId == collaboratorId).CollaboratorId == collaboratorId)
 				.ToListAsync();
 		}
 

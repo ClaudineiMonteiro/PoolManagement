@@ -18,7 +18,7 @@ namespace Vm.Pm.Data.Mappings
 				.IsRequired();
 
 			builder.Property(p => p.Email)
-				.HasColumnType("varchar(20)");
+				.HasColumnType("varchar(200)");
 
 			builder.HasMany(c => c.Contacts)
 				.WithOne(c => c.Customer)
