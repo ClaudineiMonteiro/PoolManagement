@@ -29,6 +29,8 @@ namespace Vm.Pm.App.ViewModels
 		public Guid? ContactId { get; set; }
 		[HiddenInput]
 		public Guid? CollaboratorId { get; set; }
+		[HiddenInput]
+		public Guid? CustomerId { get; set; }
 
 		public List<TypePhone> TypePhones { get; set; }
 

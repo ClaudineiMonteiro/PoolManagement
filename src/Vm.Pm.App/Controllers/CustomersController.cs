@@ -158,6 +158,14 @@ namespace Vm.Pm.App.Controllers
 
 			return customerViewModel;
 		}
+		#endregion
+
+		#region Phone
+		[Route("new-phone-customer/{id:guid}")]
+		public IActionResult NewPhone(Guid id)
+		{
+			return PartialView("~/Views/Shared/Phone/_AddPhone.cshtml", new PhoneViewModel { CustomerId = id });
+		}
+		#endregion
 	}
-	#endregion
 }

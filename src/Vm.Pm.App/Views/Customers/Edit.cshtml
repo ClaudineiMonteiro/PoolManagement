@@ -1,7 +1,7 @@
 ﻿@model Vm.Pm.App.ViewModels.CustomerViewModel
 
 @{
-    ViewData["Title"] = "Alteração de Customer";
+	ViewData["Title"] = "Alteração de Customer";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -41,3 +41,42 @@
 		</div>
 	</div>
 </form>
+
+<hr />
+<h4>Phones</h4>
+
+<div id="PhoneTarget">
+	<partial name="_PhonesListCustomer" model="@Model" />
+</div>
+
+@*<hr />
+<h4>Addresses</h4>
+
+<div id="AddressTarget">
+	<partial name="_AddressesListCollaborator" model="@Model" />
+</div>
+
+<hr />
+<h4>Contacts</h4>
+
+<div id="ContactTarget">
+	<partial name="_ContactsListCollaborator" model="@Model" />
+</div>*@
+
+<div id="myModal" class="modal fade in">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div id="myModalContent"></div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+	<script>
+		$(document).ready(function () {
+			AjaxModal();
+		});
+	</script>
+}
