@@ -25,6 +25,7 @@ namespace Vm.Pm.App.Controllers
 		private readonly IMapper _mapper;
 
 		#endregion
+
 		#region Builders
 		public CustomersController(ICustomerService customerService,
 			ICustomerRepository customerRepository,
@@ -85,7 +86,7 @@ namespace Vm.Pm.App.Controllers
 
 			if (!ValidOperation()) return View(customerViewModel);
 
-			return View("Index");
+			return RedirectToAction("Index");
 		}
 
 		[Route("edit-customer/{id:guid}")]
