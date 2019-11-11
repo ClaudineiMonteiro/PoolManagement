@@ -51,7 +51,8 @@ namespace Vm.Pm.Data.Repository
 
 		public virtual async Task Remove(Guid id)
 		{
-			DbSet.Remove(new TEntity { Id = id });
+			TEntity entity = await DbSet.FindAsync(id);
+			DbSet.Remove(entity);
 			await SaveChanges();
 		}
 
