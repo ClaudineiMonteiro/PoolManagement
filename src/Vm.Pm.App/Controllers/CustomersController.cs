@@ -223,6 +223,32 @@ namespace Vm.Pm.App.Controllers
 			var url = Url.Action("GetPhonesCollaborator", "Customers", new { id = phoneViewModel.CustomerId });
 			return Json(new { success = true, url });
 		}
+
+		[Route("delete-phone-customer/{id:guid}")]
+		public async Task<IActionResult> DeletePhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _customerService.GetPhoneById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Phone/_DeletePhone.cshtml", phoneViewModel);
+		}
+
+		[Route("confirme-delete-phone-customer")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ConfirmeDeletePhone(PhoneViewModel phoneViewModel)
+		{
+			await _customerService.RemovePhone(phoneViewModel.Id);
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_DeletePhone.cshtml", phoneViewModel);
+
+			var url = Url.Action("GetPhonesCollaborator", "Collaborator", new { id = phoneViewModel.CustomerId });
+			return Json(new { success = true, url });
+		}
 		#endregion
 	}
 }
