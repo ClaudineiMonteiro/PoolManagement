@@ -196,6 +196,19 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 
+		[Route("detail-phone-customer/{id:guid}")]
+		public async Task<IActionResult> DetailPhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _customerService.GetPhoneById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Phone/_DetailPhone.cshtml", phoneViewModel);
+		}
+
 		[Route("edit-phone-customer/{id:guid}")]
 		public async Task<IActionResult> EditPhone(Guid id)
 		{
