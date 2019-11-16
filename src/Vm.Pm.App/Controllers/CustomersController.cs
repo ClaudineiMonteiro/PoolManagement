@@ -263,5 +263,41 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 		#endregion
+
+		#region Address
+		[AllowAnonymous]
+		[Route("get-addresses-customer/{id:guid}")]
+		public async Task<IActionResult> GetAddressesCustomer(Guid id)
+		{
+			var customerViewModel = _mapper.Map<CollaboratorViewModel>(await _customerRepository.GetCustomerAddresses(id));
+
+			if (customerViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Collaborator/_AddressesListCustomer.cshtml", customerViewModel);
+		}
+
+		[Route("new-address-customer/{id:guid}")]
+		public IActionResult NewAddress(Guid id)
+		{
+			return PartialView("~/Views/Shared/Address/_AddAddress.cshtml", new AddressViewModel { CustomerId = id });
+		}
+
+		[Route("addnew-address-customer")]
+		[HttpPost]
+		public async Task<IActionResult> AddNewAddress(AddressViewModel addressViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Address/_AddressList", addressViewModel);
+
+			await _customerService.AddAddress(_mapper.Map<Address>(addressViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_AddAddress", addressViewModel);
+
+			var url = Url.Action("GetAddressesCollaborator", "Customers", new { id = addressViewModel.CustomerId });
+			return Json(new { success = true, url });
+		}
+		#endregion
 	}
 }
