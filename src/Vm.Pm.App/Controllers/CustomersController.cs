@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -161,10 +162,38 @@ namespace Vm.Pm.App.Controllers
 		#endregion
 
 		#region Phone
+		[AllowAnonymous]
+		[Route("get-phones-customer/{id:guid}")]
+		public async Task<IActionResult> GetPhonesCustomer(Guid id)
+		{
+			var customerViewModel = _mapper.Map<CustomerViewModel>(await _customerRepository.GetCustomerPhonesAddressesContactsCollaborators(id));
+
+			if (customerViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Customer/_PhonesListCustomer.cshtml", customerViewModel);
+		}
+
 		[Route("new-phone-customer/{id:guid}")]
 		public IActionResult NewPhone(Guid id)
 		{
 			return PartialView("~/Views/Shared/Phone/_AddPhone.cshtml", new PhoneViewModel { CustomerId = id });
+		}
+
+		[Route("addnew-phone-customer")]
+		[HttpPost]
+		public async Task<IActionResult> AddNewPhone(PhoneViewModel phoneViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Phone/_PhoneList", phoneViewModel);
+
+			await _customerService.AddPhone(_mapper.Map<Phone>(phoneViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_AddPhone", phoneViewModel);
+
+			var url = Url.Action("GetPhonesCustomer", "Customers", new { id = phoneViewModel.CustomerId });
+			return Json(new { success = true, url });
 		}
 		#endregion
 	}
