@@ -13,6 +13,7 @@
 <form asp-action="ConfirmeDeleteAddress">
 	<div class="modal-body">
 		<input type="hidden" asp-for="CollaboratorId" />
+		<input type="hidden" asp-for="CustomerId" />
 		<input type="hidden" asp-for="Id" />
 
 		<partial name="~/Views/Shared/Address/_Address.cshtml" />

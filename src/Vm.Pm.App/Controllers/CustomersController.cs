@@ -340,6 +340,31 @@ namespace Vm.Pm.App.Controllers
 			return Json(new { success = true, url });
 		}
 
+		[Route("delete-address-customer/{id:guid}")]
+		public async Task<IActionResult> DeleteAddress(Guid id)
+		{
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _customerService.GetAddressById(id));
+
+			if (addressViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Address/_DeleteAddress.cshtml", addressViewModel);
+		}
+
+		[Route("confirme-delete-address-customer")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> ConfirmeDeleteAddress(AddressViewModel addressViewModel)
+		{
+			await _customerService.RemoveAddress(addressViewModel.Id);
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_DeleteAddress.cshtml", addressViewModel);
+
+			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CustomerId });
+			return Json(new { success = true, url });
+		}
 		#endregion
 	}
 }
