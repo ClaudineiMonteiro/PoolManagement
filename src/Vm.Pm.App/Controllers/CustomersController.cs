@@ -195,6 +195,34 @@ namespace Vm.Pm.App.Controllers
 			var url = Url.Action("GetPhonesCustomer", "Customers", new { id = phoneViewModel.CustomerId });
 			return Json(new { success = true, url });
 		}
+
+		[Route("edit-phone-customer/{id:guid}")]
+		public async Task<IActionResult> EditPhone(Guid id)
+		{
+			var phoneViewModel = _mapper.Map<PhoneViewModel>(await _customerService.GetPhoneById(id));
+
+			if (phoneViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
+		}
+
+		[Route("save-edit-phone-customer")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SaveEditPhone(PhoneViewModel phoneViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
+
+			await _customerService.UpdatePhone(_mapper.Map<Phone>(phoneViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Phone/_EditPhone.cshtml", phoneViewModel);
+
+			var url = Url.Action("GetPhonesCollaborator", "Customers", new { id = phoneViewModel.CustomerId });
+			return Json(new { success = true, url });
+		}
 		#endregion
 	}
 }
