@@ -298,6 +298,48 @@ namespace Vm.Pm.App.Controllers
 			var url = Url.Action("GetAddressesCollaborator", "Customers", new { id = addressViewModel.CustomerId });
 			return Json(new { success = true, url });
 		}
+
+		[Route("detail-address-customer/{id:guid}")]
+		public async Task<IActionResult> DetailAddress(Guid id)
+		{
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _customerService.GetAddressById(id));
+
+			if (addressViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Address/_DetailAddress.cshtml", addressViewModel);
+		}
+
+		[Route("edit-address-customer/{id:guid}")]
+		public async Task<IActionResult> EditAddress(Guid id)
+		{
+			var addressViewModel = _mapper.Map<AddressViewModel>(await _customerService.GetAddressById(id));
+
+			if (addressViewModel == null)
+			{
+				return NotFound();
+			}
+
+			return PartialView("~/Views/Shared/Address/_EditAddress.cshtml", addressViewModel);
+		}
+
+		[Route("save-edit-address-customer")]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> SaveEditAddress(AddressViewModel addressViewModel)
+		{
+			if (!ModelState.IsValid) return PartialView("~/Views/Shared/Address/_EditAddress.cshtml", addressViewModel);
+
+			await _customerService.UpdateAddress(_mapper.Map<Address>(addressViewModel));
+
+			if (!ValidOperation()) return PartialView("~/Views/Shared/Address/_EditAddress.cshtml", addressViewModel);
+
+			var url = Url.Action("GetAddressesCollaborator", "Collaborator", new { id = addressViewModel.CustomerId });
+			return Json(new { success = true, url });
+		}
+
 		#endregion
 	}
 }
