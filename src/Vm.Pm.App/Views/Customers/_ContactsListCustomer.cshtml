@@ -1,0 +1,7 @@
+﻿@model Vm.Pm.App.ViewModels.CustomerViewModel
+
+<p supress-by-claim-name="Contact" supress-by-claim-value="Add">
+	<a class="btn btn-info" asp-controller="Contacts" asp-action="AddContactByListCustomer" asp-route-id="@Model.Id">Novo Contato</a>
+</p>
+
+<partial name="~/Views/Shared/Contact/ContactList.cshtml" model="@Model.Contacts" />

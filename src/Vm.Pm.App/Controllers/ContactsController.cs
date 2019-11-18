@@ -73,7 +73,15 @@ namespace Vm.Pm.App.Controllers
 
 			if (!ValidOperation()) return View(contactViewModel);
 
-			return RedirectToAction("Edit", "Companies", new { id = contactViewModel.CompanyId });
+
+			if (contactViewModel.CompanyId != null)
+			{
+				return RedirectToAction("Edit", "Companies", new { id = contactViewModel.CompanyId }); 
+			}
+			else
+			{
+				return RedirectToAction("Edit", "Customers", new { id = contactViewModel.CustomerId });
+			}
 		}
 
 		[Route("edit-contact/{id:guid}")]
@@ -148,6 +156,11 @@ namespace Vm.Pm.App.Controllers
 			return View("Create", new ContactViewModel { CollaboratorId = id });
 		}
 
+		[Route("add-contact-by-list-of-customer/{id:guid}")]
+		public ActionResult AddContactByListCustomer(Guid id)
+		{
+			return View("Create", new ContactViewModel { CustomerId = id });
+		}
 		#region Phone
 		[AllowAnonymous]
 		[Route("get-phone-contact/{id:guid}")]

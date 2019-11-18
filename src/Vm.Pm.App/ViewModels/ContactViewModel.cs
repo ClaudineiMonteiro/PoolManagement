@@ -24,6 +24,8 @@ namespace Vm.Pm.App.ViewModels
 
 		[HiddenInput]
 		public Guid? CompanyId { get; set; }
+		[HiddenInput]
+		public Guid? CustomerId { get; set; }
 		public CompanyViewModel Company { get; set; }
 
 		[HiddenInput]
